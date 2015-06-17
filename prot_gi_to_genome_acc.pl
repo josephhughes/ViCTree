@@ -22,7 +22,7 @@ my $factory = Bio::DB::EUtilities->new(-eutil          => 'elink',
                                        -email          => 'mymail@foo.bar',
                                        -db             => 'nucleotide',
                                        -dbfrom         => 'protein',
-                                       #-correspondence => 1,
+                                       -correspondence => 1,
                                        -id             => \@ids);
  
 	# iterate through the LinkSet objects
