@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 # This script can take a list of protein GIs as input and fetches nucleotide GI, genome accession number from NCBI
+# Written by Sejal Modha
+
 use Bio::DB::EUtilities;
 
 #my @ids     = qw(817524604 726965494);
