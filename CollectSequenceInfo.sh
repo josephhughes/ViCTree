@@ -3,10 +3,8 @@
 ########################## ICTV Pipeline ################################################
 # This script is written by Sejal Modha							#
 #											#
-# This script can be used to download sequences from NCBI				#
-# and process them through this pipeline and produce a raxML tree as output		#
+# This script can be used to collect sequence metadata					#
 #-------------------------------------------------------------------------------	#
-# This script is hardcoded to 								#
 #											#					
 # Usage:										#
 #	./CollectSequenceInfo <options>							#
