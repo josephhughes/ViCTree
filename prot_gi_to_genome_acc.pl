@@ -7,8 +7,7 @@ use Bio::DB::EUtilities;
 my $infile = $ARGV[0];
 #my $outfile = $ARGV[1];
 my @ids;
-#my (%taxa, @taxa);
-my (%names, %idmap);
+
 open (IN,"$infile")||die "can't open $infile\n";
 
 while(<IN>)
@@ -48,4 +47,4 @@ my @accs = split(m{\n},$factory->get_Response->content);
 	}
 }
 
-close(<IN>);
+close($infile);
