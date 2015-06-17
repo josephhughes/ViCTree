@@ -48,3 +48,4 @@ my @accs = split(m{\n},$factory->get_Response->content);
 	}
 }
 
+close(<IN>);
