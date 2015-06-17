@@ -8,10 +8,12 @@
 #-------------------------------------------------------------------------------#
 # This script is hardcoded to 							#
 #	* Use a number of scripts including 					#
-#	* 					#
-#	* 			#
-#	* 		#
-#	  		#
+#		* DownloadProteinForTaxid.pl					#
+#		* SanityCheck.pl						#
+#		* BlastParseToList.pl						#
+#		* CompileSequences.pl						#
+#	  	* remove_subseq.pl						#
+#										#
 # Usage:									#
 #	./ICTV_pipeline <options>						#
 #	 OPTIONS:								#
