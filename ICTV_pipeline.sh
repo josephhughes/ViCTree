@@ -116,11 +116,11 @@ while getopts t:s:l:c:hr flag; do
 	perl -p -i -e 's/>(.+?) .+/>$1/g' ${tid}_final_set.fa;
 	echo "-----------------Running Step 6 of Pipeline --------------------";
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
-	clustalo -i ${tid}_final_set.fa -o ${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force
+	clustalo -i ${tid}_final_set.fa -o ${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=${tid}_clustalo_dist_mat
 
 	echo "-----------------Running Step 7 of Pipeline --------------------";
 	printf "Running Phylogenetic Analysis using RAXML \n";
-	raxmlHPC-PTHREADS -T 10 -f a -m PROTGAMMAGTR -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid	
+	#raxmlHPC-PTHREADS -T 10 -f a -m PROTGAMMAGTR -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid	
 	
 	;;
     h)
