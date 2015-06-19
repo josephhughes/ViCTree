@@ -106,7 +106,9 @@ while getopts t:s:l:c:hr flag; do
 	cat ${tid}_set.fa $seeds > ${tid}_set_seeds_combined.fa;
 	echo "Removing Exact Duplicates";
 	#fasta_formatter -i ${tid}_set_seeds_combined.fa -o ${tid}_set_seeds_combined_formatted.fa	
-	#prinseq sometimes keep two copies of a seq - reason unknown - find alternative?	
+	#prinseq sometimes keep two copies of a seq - reason unknown - find alternative?
+	# bash solution to remove exact dups however it doesn't keep track of removed seqs
+	#fasta_formatter -t -i ${tid}_set_seeds_combined.fa  |sort -u -t $'\t' -f -k 2,2  | sed -e 's/^/>/' -e 's/\t/\n/';	
 	prinseq -fasta ${tid}_set_seeds_combined.fa -derep 1 -out_good ${tid}_combined_set_dups_removed -out_bad ${tid}_set_dups
 	fasta_formatter -i ${tid}_combined_set_dups_removed.fasta -o ${tid}_combined_set_dups_removed_formatted.fa
 	#grep -c "^>" ${tid}_combined_set_dups_removed_formatted.fa;
@@ -117,10 +119,17 @@ while getopts t:s:l:c:hr flag; do
 	echo "-----------------Running Step 6 of Pipeline --------------------";
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 	clustalo -i ${tid}_final_set.fa -o ${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=${tid}_clustalo_dist_mat
-
+	
 	echo "-----------------Running Step 7 of Pipeline --------------------";
+	printf "Grouping identical sequences \n"; 
+	perl -p  -e 's/>(.+?) .+/>$1/g' ${tid}_set_seeds_combined.fa | fasta_formatter -t |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
+	# Combine file specified in above additional step to provide a list of representative set as well as the extended set
+	fasta_formatter -t -i ${tid}_final_set.fa | cut -f1 > file_with_id_list
+	bash find_ids.sh file_with_id_list seq_id_grouped |  sed  -e '1iRepresentative_GI\tProtein_Sequence\tExtended_GI_List' > ${tid}_seq_info 
+	rm file_with_id_list seq_id_grouped ${tid}_set_seeds_combined.fa ${tid}_set.fa ${tid}_combined_set_dups_removed_formatted.fa ${tid}_checked.fa*  ${tid}_blastp.txt
+	echo "-----------------Running Step 8 of Pipeline --------------------";
 	printf "Running Phylogenetic Analysis using RAXML \n";
-	#raxmlHPC-PTHREADS -T 10 -f a -m PROTGAMMAGTR -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid	
+	raxmlHPC-PTHREADS -T 10 -f a -m PROTGAMMAGTR -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid	
 	
 	;;
     h)
