@@ -13,6 +13,9 @@ my $infasta = $ARGV[0];
 my $list = $ARGV[1];
 my $outstub=$ARGV[2];
 my %ids;
+
+my $lineage;
+
 open (LIST,"<$list")||die "can't open $list\n";
 while(<LIST>){
   chomp($_);
@@ -47,10 +50,13 @@ while( my $seq = $seq_in->next_seq() ) {
                                                 -id    => $taxid );
      my ($name)  = $factory->next_DocSum->get_contents_by_name('ScientificName');
     # print "$name\n";
-     print TABLE "$gi\tTAXONOMY_ID:$taxid\tTAXONOMY_ID_PROVIDER:ncbi\tTAXONOMY_SN:$name\tSEQ_ACCESSION:$gi\tSEQ_ACCESSION_SOURCE:gi\tSEQ_ANNOTATION_DESC:$id\n";
-    }
-	
-	
+####Edited by SM - need to fix the STDOUT error
+   system ($lineage=`xmllint  --xpath "/eSearchResult/IdList/Id/text()" "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=taxonomy&term=${name}[SCIN]"| xargs -I TAXON xmllint --noout --xpath "/TaxaSet/Taxon/Lineage/text()" "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=taxonomy&id=TAXON&retmode=xml&rettype=full"`);
+
+   print "$lineage\n";
+
+   print TABLE "$gi\tTAXONOMY_ID:$taxid\tTAXONOMY_ID_PROVIDER:ncbi\tTAXONOMY_SN:$name\tSEQ_ACCESSION:$gi\tSEQ_ACCESSION_SOURCE:gi\tSEQ_ANNOTATION_DESC:$id\tLINEAGE:$lineage\n";
+}
   }elsif (!$ids{$id}){
     #print "$id does not exist in the file $list\n";	
   }	

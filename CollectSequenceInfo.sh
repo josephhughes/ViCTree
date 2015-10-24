@@ -3,8 +3,10 @@
 ########################## ICTV Pipeline ################################################
 # This script is written by Sejal Modha							#
 #											#
-# This script can be used to collect sequence metadata					#
+# This script can be used to download sequences from NCBI				#
+# and process them through this pipeline and produce a raxML tree as output		#
 #-------------------------------------------------------------------------------	#
+# This script is hardcoded to 								#
 #											#					
 # Usage:										#
 #	./CollectSequenceInfo <options>							#
@@ -50,8 +52,10 @@ while getopts i:o:rh flag; do
 	;;
     r)
 	touch ${out}_table;
-	printf "Protein_GI\tNucleotide_GI\tGenome_Accession\tSpecies_Name\tDescription\n"> ${out}_table;
-	cut -f1,4,7 $input >temp_table;
+	printf "Protein_GI\tNucleotide_GI\tGenome_Accession\tSpecies_Name\tDescription\tLineage\tGenus\n"> ${out}_table;
+#	cut -f1,4,7,8 $input >temp_table;
+	paste <(cut -f1,4,7,8 $input) <(grep LINEAGE $input | cut -f5 -d ";") > temp_table
+	
 	cut -f1 $input > prot_gi_list;
 	perl prot_gi_to_genome_acc.pl prot_gi_list > prot_gi_to_genome_acc;
 	sed -i 's/Protein ID://g;s/Nuc ID://g;s/Genome Accession://g' prot_gi_to_genome_acc;

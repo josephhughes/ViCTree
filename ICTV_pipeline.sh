@@ -117,7 +117,7 @@ while getopts t:s:l:c:hr flag; do
 	printf "Compiling Sequences \n";
 
 	perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
-	perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set;
+	perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
 
 	#combine seeds and blast sets
 	cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
