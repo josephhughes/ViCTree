@@ -122,17 +122,21 @@ while getopts t:s:l:c:hr flag; do
 	#combine seeds and blast sets
 	cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 	echo "Removing Exact Duplicates";
-	#fasta_formatter -i ${tid}_set_seeds_combined.fa -o ${tid}_set_seeds_combined_formatted.fa	
 	#prinseq sometimes keep two copies of a seq - reason unknown - find alternative?
+	#prinseq -fasta $tid/${tid}_set_seeds_combined.fa -derep 1 -out_good $tid/${tid}_combined_set_dups_removed -out_bad $tid/${tid}_set_dups
 	# bash solution to remove exact dups however it doesn't keep track of removed seqs
 	#fasta_formatter -t -i ${tid}_set_seeds_combined.fa  |sort -u -t $'\t' -f -k 2,2  | sed -e 's/^/>/' -e 's/\t/\n/';	
-	prinseq -fasta $tid/${tid}_set_seeds_combined.fa -derep 1 -out_good $tid/${tid}_combined_set_dups_removed -out_bad $tid/${tid}_set_dups
+
+	## Truncate seq ID in fasta file
+	perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
+	# Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
+	fasta_formatter -t -i $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
+	
+	awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed
 	fasta_formatter -i $tid/${tid}_combined_set_dups_removed.fasta -o $tid/${tid}_combined_set_dups_removed_formatted.fa
-	#grep -c "^>" ${tid}_combined_set_dups_removed_formatted.fa;
+	
 	echo "Removing Shorter Sequences";
 	perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
-	#grep -c "^>" ${tid}_final_set.fa;
-	perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_final_set.fa;
 
 	echo "-----------------Running Step 6 of Pipeline --------------------";
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
