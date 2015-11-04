@@ -1,28 +1,28 @@
 #!/bin/bash
 
 ########################## ICTV Pipeline ########################################
-# This script is written by Sejal Modha						#
-#										#
-# This script can be used to download sequences from NCBI			#
-# and process them through this pipeline and produce a raxML tree as output	#
+# This script is written by Sejal Modha											#
+#																				#
+# This script can be used to download sequences from NCBI						#
+# and process them through this pipeline and produce a raxML tree as output		#
 #-------------------------------------------------------------------------------#
-# This script is hardcoded to 							#
-#	* Use a number of scripts including 					#
-#		* DownloadProteinForTaxid.pl					#
-#		* SanityCheck.pl						#
-#		* BlastParseToList.pl						#
-#		* CompileSequences.pl						#
-#	  	* remove_subseq.pl						#
-#										#
-# Usage:									#
-#	./ICTV_pipeline <options>						#
-#	 OPTIONS:								#
+# This script is hardcoded to 													#
+#	* Use a number of scripts including 										#
+#		* DownloadProteinForTaxid.pl											#
+#		* SanityCheck.pl														#
+#		* BlastParseToList.pl													#
+#		* CompileSequences.pl													#
+#	  	* remove_subseq.pl														#
+#																				#
+# Usage:																		#
+#	./ICTV_pipeline <options>													#
+#	 OPTIONS:																	#
 #		-t Taxa ID (Required)
 #		-s Seed Set - Fasta (Required)
 #		-l Hit Length for BLAST (Required)
 #		-c Coverage for BLAST (Required)
 #		-r Run pipeline with specified parameters (Required) 
-#		-h Print usage help message (Optional)				#
+#		-h Print usage help message (Optional)									#
 #-------------------------------------------------------------------------------#
 
 usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
@@ -40,8 +40,8 @@ exit;
 fi
 
 alpha='[a-zA-Z]';
-
-while getopts t:s:l:c:hr flag; do
+raxml='PROTGAMMAJTT';
+while getopts t:s:l:c:m:hr flag; do
   case $flag in
 
     t)
@@ -92,7 +92,18 @@ while getopts t:s:l:c:hr flag; do
 		printf "BLAST coverage\t: $cover \n\n";
         fi	
 	;;
-    r)
+	m)
+	raxModel=`echo "$OPTARG"`;
+	if [[ -z $raxModel ]]
+		then
+		raxModel=$raxml;
+		printf "Selecting default RAxML model PROTGAMMAGTR \n";
+	else
+		raxml=$raxModel;
+		printf "RAxML model set to $raxModel \n";
+		fi	
+	;;
+	r)
 	
 	printf "Now Downloading all protein sequences from NCBI for taxid $tid \n";
 	echo "-----------------Running Step 1 of Pipeline --------------------";
@@ -132,8 +143,8 @@ while getopts t:s:l:c:hr flag; do
 	# Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
 	fasta_formatter -t -i $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
 	
-	awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed
-	fasta_formatter -i $tid/${tid}_combined_set_dups_removed.fasta -o $tid/${tid}_combined_set_dups_removed_formatted.fa
+	awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed.fa
+	fasta_formatter -i $tid/${tid}_combined_set_dups_removed.fa -o $tid/${tid}_combined_set_dups_removed_formatted.fa
 	
 	echo "Removing Shorter Sequences";
 	perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
@@ -154,8 +165,10 @@ while getopts t:s:l:c:hr flag; do
 
 	echo "-----------------Running Step 8 of Pipeline --------------------";
 	printf "Running Phylogenetic Analysis using RAXML \n";
+	printf "RAxML model is set to $raxml \n\n";
 	cd $tid;
-	raxmlHPC-PTHREADS -T 10 -f a -m PROTGAMMAGTR -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
+	printf "raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
+	raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
 	
 	;;
     h)
