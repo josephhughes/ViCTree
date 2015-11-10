@@ -97,7 +97,7 @@ while getopts t:s:l:c:m:hr flag; do
 	if [[ -z $raxModel ]]
 		then
 		raxModel=$raxml;
-		printf "Selecting default RAxML model PROTGAMMAGTR \n";
+		printf "Selecting default RAxML model PROTGAMMAJTT \n";
 	else
 		raxml=$raxModel;
 		printf "RAxML model set to $raxModel \n";
