@@ -92,7 +92,7 @@ while getopts t:s:l:c:m:hr flag; do
 		printf "BLAST coverage\t: $cover \n\n";
         fi	
 	;;
-	m)
+    m)
 	raxModel=`echo "$OPTARG"`;
 	if [[ -z $raxModel ]]
 		then
