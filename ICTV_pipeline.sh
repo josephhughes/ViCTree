@@ -23,6 +23,7 @@
 #		-c Coverage for BLAST (Required)
 #		-r Run pipeline with specified parameters (Required) 
 #		-h Print usage help message (Optional)									#
+#		-m Specify model for RAxML (Default is PTRGAMMJTT)
 #-------------------------------------------------------------------------------#
 
 usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
@@ -31,7 +32,8 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-l Hit Length for BLAST - INT(Required) \n
 		-c Coverage for BLAST -INT(Required) \n
 		-r Run pipeline with specified parameters (Required) \n 
-		-h This helpful message\n"`;
+		-h This helpful message\n
+		-m Specify model for RAxML (Default is PTRGAMMJTT)"`;
 
 if [[ ! $1 ]] 
 then
