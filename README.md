@@ -1,2 +1,3 @@
-# ICTV-phylo
-Pipeline for automatically generating phylogenies of virus phylogenies
+# ViCTree
+
+Pipeline for automatically generating phylogenies of virus families and subfamilies
