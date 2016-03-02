@@ -48,6 +48,7 @@ while getopts t:s:l:c:m:hr flag; do
 
     t)
 	taxid=`echo "$OPTARG"`;
+	
 	if [[ $taxid =~ .*$alpha.* ]]
         then
 		printf "\n!!!! Invalid Taxa ID: Please enter a valid Taxa ID !!!! \nExample: 40120\n";
@@ -66,7 +67,7 @@ while getopts t:s:l:c:m:hr flag; do
 	seeds=`echo "$OPTARG"`;
 	if [[ ! -f $seeds ]]
 	then
-		printf "$seeds file does not exist \n";
+		printf "\nSpecified seeds file $seeds file does not exist \n \n";
 		exit 1;
 	else
 		printf "Seed set\t: $seeds \n";
@@ -131,12 +132,14 @@ while getopts t:s:l:c:m:hr flag; do
 
 	perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
 	perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
-
+	echo "Gathering metadata";
+	bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid} -r 
+	mv ${tid}_metadata ${tid}/${tid}_metadata 
+	
 	#combine seeds and blast sets
 	cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 	echo "Removing Exact Duplicates";
-	#prinseq sometimes keep two copies of a seq - reason unknown - find alternative?
-	#prinseq -fasta $tid/${tid}_set_seeds_combined.fa -derep 1 -out_good $tid/${tid}_combined_set_dups_removed -out_bad $tid/${tid}_set_dups
+	
 	# bash solution to remove exact dups however it doesn't keep track of removed seqs
 	#fasta_formatter -t -i ${tid}_set_seeds_combined.fa  |sort -u -t $'\t' -f -k 2,2  | sed -e 's/^/>/' -e 's/\t/\n/';	
 
@@ -152,6 +155,10 @@ while getopts t:s:l:c:m:hr flag; do
 	echo "Removing Shorter Sequences";
 	perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
 
+	#Throw a warning message for the sequences for which metadata was not found
+	#TODO
+
+ 
 	echo "-----------------Running Step 6 of Pipeline --------------------";
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 	clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
@@ -160,8 +167,6 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "Grouping identical sequences \n"; 
 
 	perl -p  -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa | fasta_formatter -t |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
-	# Combine file specified in above additional step to provide a list of representative set as well as the extended set
-	#fasta_formatter -t -i
 	
 	awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_final_set.fa | cut -f1 > file_with_id_list
 	
@@ -177,7 +182,10 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
 	raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
 	#Reroot the tree
-	raxmlHPC -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot
+	raxmlHPC -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
+	mv RAxML_rootedTree.${tid}_reroot ${tid}_tree.nhx
+	cd ..
+	
 	;;
     h)
      	printf "${usage}\n\n";
