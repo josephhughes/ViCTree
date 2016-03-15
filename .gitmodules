@@ -1,0 +1,3 @@
+[submodule "phylotree"]
+	path = phylotree
+	url = https://github.com/anilthanki/phylotree.git
