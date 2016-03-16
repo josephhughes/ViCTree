@@ -52,14 +52,14 @@ while getopts i:o:rh flag; do
 	;;
     r)
 	touch ${out}_metadata;
-	printf "Protein_GI\tNucleotide_GI\tGenome_Accession\tSpecies_Name\tDescription\tLineage\tGenus\n"> ${out}_metadata;
+	printf "Protein_GI\tNucleotide_GI\tGenome_Accession\tSpecies_Name\tDescription\tLineage\tGenus\tURL\n"> ${out}_metadata;
 #	cut -f1,4,7,8 $input >temp_table;
 	paste <(cut -f1,4,7,8 $input) <(grep LINEAGE $input | cut -f5 -d ";") > temp_table
 	
 	cut -f1 $input > prot_gi_list;
 	perl prot_gi_to_genome_acc.pl prot_gi_list > prot_gi_to_genome_acc;
 	sed -i 's/Protein ID://g;s/Nuc ID://g;s/Genome Accession://g' prot_gi_to_genome_acc;
-	join <(sort <(uniq prot_gi_to_genome_acc)) <(sort temp_table) -t $'\t' >>  ${out}_metadata;
+	join <(sort <(uniq prot_gi_to_genome_acc)) <(sort temp_table) -t $'\t'|awk  'BEGIN {FS="\t";OFS=","} {print $1,$2,$3,$4,$5,$6,$7,"http://www.ncbi.nlm.nih.gov/nuccore/"$3 }' >>  ${out}_metadata;
 	sed -i 's/TAXONOMY_SN://g;s/SEQ_ANNOTATION_DESC://g' ${out}_metadata;
 	rm temp_table prot_gi_list prot_gi_to_genome_acc;
 	;;
