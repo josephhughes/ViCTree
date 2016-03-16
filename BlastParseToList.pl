@@ -35,10 +35,10 @@ while( my $result = $report_obj->next_result ) {
         my $qid=$result->query_name;
         my $len = $hsp->hsp_length();
         if ((100*$len/$q_len)>$cover){
-          print "$id\t$hitname\t$hit_len\t$len\n";
+          #print "$id\t$hitname\t$hit_len\t$len\n";
           $gi{$hitname}++;
         }elsif ((100*$len/$q_len)<=$cover){
-          print "$id\t$hitname\n";
+          #print "$id\t$hitname\n";
         }
       }     
     }
