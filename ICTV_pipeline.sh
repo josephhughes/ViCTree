@@ -43,7 +43,7 @@ fi
 
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
-threads="10";
+threads="2";
 while getopts t:s:l:c:m:hr flag; do
   case $flag in
 
@@ -199,7 +199,7 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "RAxML model is set to $raxml \n\n";
 	cd $tid;
 	printf "raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
-	raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
+	raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
 	#Reroot the tree
 	raxmlHPC -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
 	mv RAxML_rootedTree.${tid}_reroot ${tid}_tree.nhx
