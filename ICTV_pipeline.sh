@@ -43,6 +43,7 @@ fi
 
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
+threads="10";
 while getopts t:s:l:c:m:hr flag; do
   case $flag in
 
@@ -105,6 +106,20 @@ while getopts t:s:l:c:m:hr flag; do
 		raxml=$raxModel;
 		printf "RAxML model set to $raxModel \n";
 		fi	
+	;;
+	p)
+	proc=`echo "$OPTARG"`;
+	if [[ $proc =~ .*$alpha.* ]]
+        then
+		printf "\n!!!! Invalid Number of Threads: Please enter a valid number of threads !!!! \n";
+		exit 1;
+	elif [[ -z $proc ]]
+		then
+		proc=$threads;
+		printf "Selecting default number of threads $threads \n";
+	else
+		printf "Using user-specified $proc threads for this pipeline\n";	
+        fi
 	;;
 	r)
 	
