@@ -178,9 +178,9 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 	clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
 	#Format matrix file for visualization
-	sed -e '1d' ${tid}_clustalo_dist_mat| tr -s " "|sed 's/ /,/g' > ${tid}_clustalo_dist_mat.csv
-	header=`cut -f1 -d ',' ${tid}_clustalo_dist_mat.csv| tr '\n' ',' `
-	sed -i "1ispecies,"$header"" ${tid}_clustalo_dist_mat.csv
+	sed -e '1d' $tid_clustalo_dist_mat| tr -s " "|sed 's/ /,/g' > ${tid}_clustalo_dist_mat.csv
+	header=`cut -f1 -d ',' $tid_clustalo_dist_mat.csv| tr '\n' ',' `
+	sed -i "1ispecies,"$header"" $tid_clustalo_dist_mat.csv
 	
 	echo "-----------------Running Step 7 of Pipeline --------------------";
 	printf "Grouping identical sequences \n"; 
