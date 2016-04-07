@@ -117,9 +117,9 @@ while getopts t:s:l:c:m:p:hr flag; do
 	elif [[ -z $proc ]]
 		then
 		proc=$threads;
-		printf "Selecting default number of threads $threads \n";
+		printf "Selecting default number of threads $threads \n\n";
 	else
-		printf "Using user-specified $proc threads for this pipeline\n";	
+		printf "printf Number of threads\t: $proc \n\n"; 	
         fi
 	;;
 	r)
