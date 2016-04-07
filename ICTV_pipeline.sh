@@ -159,7 +159,7 @@ done
 	perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
 	perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
 	echo "Gathering metadata";
-	bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid} -r 
+	bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid} 
 	mv ${tid}_metadata ${tid}/${tid}_metadata 
 	
 	#combine seeds and blast sets

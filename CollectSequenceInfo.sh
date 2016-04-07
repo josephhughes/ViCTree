@@ -32,7 +32,7 @@ exit;
 fi
 
 
-while getopts i:o:rh flag; do
+while getopts i:o:h flag; do
   case $flag in
 	
     i)
@@ -50,7 +50,19 @@ while getopts i:o:rh flag; do
 	out=`echo "$OPTARG"`;
 	#echo $out;
 	;;
-    r)
+    
+    h)
+     	printf "${usage}\n\n";
+	;;
+    \?)
+	echo -e "\n Option you selected doesn't exist \n Please use -h flag for usage";
+	exit;
+      ;;
+  esac
+done
+
+#processing begines here
+
 	touch ${out}_metadata;
 	printf "Protein_GI,Nucleotide_GI,Genome_Accession,Species_Name,Description,Lineage,Genus,URL\n"> ${out}_metadata;
 #	cut -f1,4,7,8 $input >temp_table;
@@ -62,13 +74,4 @@ while getopts i:o:rh flag; do
 	join <(sort <(uniq prot_gi_to_genome_acc)) <(sort temp_table) -t $'\t'|awk  'BEGIN {FS="\t";OFS=","} {print $1,$2,$3,$4,$5,$6,$7,"http://www.ncbi.nlm.nih.gov/nuccore/"$3 }' >>  ${out}_metadata;
 	sed -i 's/TAXONOMY_SN://g;s/SEQ_ANNOTATION_DESC://g' ${out}_metadata;
 	rm temp_table prot_gi_list prot_gi_to_genome_acc;
-	;;
-    h)
-     	printf "${usage}\n\n";
-	;;
-    \?)
-	echo -e "\n Option you selected doesn't exist \n Please use -h flag for usage";
-	exit;
-      ;;
-  esac
-done
+
