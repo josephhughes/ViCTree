@@ -206,7 +206,7 @@ done
 	printf "Running Phylogenetic Analysis using RAXML \n";
 	printf "RAxML model is set to $raxml \n\n";
 	cd $tid;
-	printf "raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
+	printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc \n";
 	raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
 	#Reroot the tree
 	raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
