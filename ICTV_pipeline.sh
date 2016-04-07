@@ -191,7 +191,7 @@ while getopts t:s:l:c:m:hr flag; do
 	
 	
 	bash find_ids.sh file_with_id_list seq_id_grouped |  sed  -e '1iRepresentative_GI\tProtein_Sequence\tExtended_GI_List' > $tid/${tid}_seq_info 
-	rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_checked.fa*  $tid/${tid}_blastp.txt
+	#rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_checked.fa*  $tid/${tid}_blastp.txt
 
 
 	echo "-----------------Running Step 8 of Pipeline --------------------";
