@@ -45,7 +45,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads="2";
-while getopts t:s:l:c:m:hr flag; do
+while getopts t:s:l:c:m:p:hr flag; do
   case $flag in
 
     t)
