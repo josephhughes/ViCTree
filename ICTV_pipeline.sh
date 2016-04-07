@@ -94,7 +94,7 @@ while getopts t:s:l:c:m:p:h flag; do
 		printf "\n!!!! Invalid Coverage Value: Please enter a valid coverage value !!!! \n";
 		exit 1;
 	else
-		printf "BLAST coverage\t: $cover \n\n";
+		printf "BLAST coverage\t: $cover \n";
         fi	
 	;;
     m)
@@ -117,9 +117,9 @@ while getopts t:s:l:c:m:p:h flag; do
 	elif [[ -z $proc ]]
 		then
 		proc=$threads;
-		printf "Selecting default number of threads $threads \n\n";
+		printf "Selecting default number of threads $threads \n";
 	else
-		printf "Number of threads\t: $proc \n\n"; 	
+		printf "Number of threads\t: $proc \n"; 	
         fi
 	;;
 	
