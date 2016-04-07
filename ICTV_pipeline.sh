@@ -165,7 +165,6 @@ while getopts t:s:l:c:m:hr flag; do
 	awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
 	
 	awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed.fa
-	#fasta_formatter -i $tid/${tid}_combined_set_dups_removed.fa -o $tid/${tid}_combined_set_dups_removed_formatted.fa
 	perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_combined_set_dups_removed.fa| tail -n +2 > $tid/${tid}_combined_set_dups_removed_formatted.fa
 	
 	echo "Removing Shorter Sequences";
@@ -186,7 +185,6 @@ while getopts t:s:l:c:m:hr flag; do
 	echo "-----------------Running Step 7 of Pipeline --------------------";
 	printf "Grouping identical sequences \n"; 
 
-	#perl -p  -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa |tail -n +2| fasta_formatter -t |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
 	perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_set_seeds_combined.fa |tail -n +2|paste -d "\t" - - |sed -e 's/>//g' |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
 	awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_final_set.fa | cut -f1 > file_with_id_list
 	
