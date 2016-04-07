@@ -119,7 +119,7 @@ while getopts t:s:l:c:m:p:h flag; do
 		proc=$threads;
 		printf "Selecting default number of threads $threads \n\n";
 	else
-		printf "printf Number of threads\t: $proc \n\n"; 	
+		printf "Number of threads\t: $proc \n\n"; 	
         fi
 	;;
 	
