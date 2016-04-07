@@ -33,7 +33,8 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-c Coverage for BLAST -INT(Required) \n
 		-r Run pipeline with specified parameters (Required) \n 
 		-h This helpful message\n
-		-m Specify model for RAxML (Default is PTRGAMMJTT)"`;
+		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
+		-p Number of threads"`;
 
 if [[ ! $1 ]] 
 then
@@ -198,10 +199,10 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "Running Phylogenetic Analysis using RAXML \n";
 	printf "RAxML model is set to $raxml \n\n";
 	cd $tid;
-	printf "raxmlHPC-PTHREADS -T 10 -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
+	printf "raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
 	raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
 	#Reroot the tree
-	raxmlHPC -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
+	raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
 	mv RAxML_rootedTree.${tid}_reroot ${tid}_tree.nhx
 	cd ..
 	
