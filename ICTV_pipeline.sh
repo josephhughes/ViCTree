@@ -117,9 +117,9 @@ while getopts t:s:l:c:m:p:h flag; do
 	elif [[ -z $proc ]]
 		then
 		proc=$threads;
-		printf "Selecting default number of threads $threads \n";
+		printf "Default threads $threads \n";
 	else
-		printf "Number of threads\t: $proc \n"; 	
+		printf "No of threads\t: $proc \n"; 	
         fi
 	;;
 	
@@ -134,7 +134,7 @@ while getopts t:s:l:c:m:p:h flag; do
 done
 
 #Processing begins here
-	printf "Now Downloading all protein sequences from NCBI for taxid $tid \n";
+	printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
 	echo "-----------------Running Step 1 of Pipeline --------------------";
 
 	perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
