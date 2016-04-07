@@ -45,7 +45,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads="2";
-while getopts t:s:l:c:m:p:hr flag; do
+while getopts t:s:l:c:m:p:h flag; do
   case $flag in
 
     t)
@@ -122,8 +122,18 @@ while getopts t:s:l:c:m:p:hr flag; do
 		printf "printf Number of threads\t: $proc \n\n"; 	
         fi
 	;;
-	r)
 	
+    h)
+     	printf "${usage}\n\n";
+	;;
+    \?)
+	echo -e "\n Option you selected doesn't exist \n Please use -h flag for usage";
+	exit;
+      ;;
+  esac
+done
+
+#Processing begins here
 	printf "Now Downloading all protein sequences from NCBI for taxid $tid \n";
 	echo "-----------------Running Step 1 of Pipeline --------------------";
 
@@ -204,12 +214,3 @@ while getopts t:s:l:c:m:p:hr flag; do
 	cd ..
 	
 	;;
-    h)
-     	printf "${usage}\n\n";
-	;;
-    \?)
-	echo -e "\n Option you selected doesn't exist \n Please use -h flag for usage";
-	exit;
-      ;;
-  esac
-done
