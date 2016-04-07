@@ -52,7 +52,7 @@ while getopts i:o:rh flag; do
 	;;
     r)
 	touch ${out}_metadata;
-	printf "Protein_GI\tNucleotide_GI\tGenome_Accession\tSpecies_Name\tDescription\tLineage\tGenus\tURL\n"> ${out}_metadata;
+	printf "Protein_GI,Nucleotide_GI,Genome_Accession,Species_Name,Description,Lineage,Genus,URL\n"> ${out}_metadata;
 #	cut -f1,4,7,8 $input >temp_table;
 	paste <(cut -f1,4,7,8 $input) <(grep LINEAGE $input | cut -f5 -d ";") > temp_table
 	
