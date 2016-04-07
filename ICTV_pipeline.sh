@@ -197,7 +197,7 @@ while getopts t:s:l:c:m:hr flag; do
 	printf "RAxML model is set to $raxml \n\n";
 	cd $tid;
 	printf "raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid \n";
-	raxmlHPC-PTHREADS -T $proc -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid;
+	raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
 	#Reroot the tree
 	raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
 	mv RAxML_rootedTree.${tid}_reroot ${tid}_tree.nhx
