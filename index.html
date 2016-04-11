@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>ViCTree by josephhughes</title>
+    <title>ViCTree</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
@@ -16,7 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>ViCTree</h1>
-        <p>Virus Taxonomy Classification Framework</p>
+        <p>A Virus Taxonomy Classification Framework</p>
 
         <p class="view"><a href="https://github.com/josephhughes/ViCTree">View the Project on GitHub <small>josephhughes/ViCTree</small></a></p>
 
@@ -32,18 +32,16 @@
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to ViCTree</h3>
 <p> ViCTree is a bioinformatics framework that automatically selects new candidate virus sequences from GenBank, generates multiple sequence alignments, calculates a maximum likelihood phylogeny and integrates the sequences into the existing phylogenetic trees. </p>
 
-<!-- <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p> -->
-
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works?</h3>
 <p> Workflow of ViCTree pipeline </p>
 
 <img align="left" src="images/ViCTree-process.png"/>
-<p>ViCTree is a bioinformatics framework that automatically selects new candidate virus sequences from GenBank, generates multiple sequence alignments, calculates a maximum likelihood phylogeny and integrates the sequences into the existing phylogenetic trees. Initially, all known protein sequences available in GenBank are downloaded, avoiding filtering based on GenBank annotations. BLAST is then used to compare these sequences with a seed set consisting of a curated set of sequences spanning the known diversity of the family. Significant matches are extracted based on the e-value and a pre-defined length parameter, followed by multiple sequence alignment and RAxML maximum likelihood tree generation. These data can be updated when new sequences are available in GenBank and all versions of the tree and alignments are retained for future reference using version control. The latest version of the tree is submitted to an interactive online tree visualisation tool, which combines the tree with pairwise distance data and enables user to employ filtering based on defined cut-off values. The pipeline is currently set up with Herpesviriadae and Parvoviridae families but is flexible and can be adapted for any virus family.</p>
+<p>Initially, all known protein sequences available in GenBank are downloaded, avoiding filtering based on GenBank annotations. BLAST is then used to compare these sequences with a seed set consisting of a curated set of sequences spanning the known diversity of the family. Significant matches are extracted based on the e-value and a pre-defined length parameter, followed by multiple sequence alignment and RAxML maximum likelihood tree generation. These data can be updated when new sequences are available in GenBank and all versions of the tree and alignments are retained for future reference using version control. The latest version of the tree is submitted to an interactive online tree visualisation tool, which combines the tree with pairwise distance data and enables the user to employ filtering based on defined distance cut-off values. The pipeline is currently set up for the Herpesviridae and Parvoviridae families but is flexible and can be adapted for any virus family.</p>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
-<p> A tutorial explaining installation of the framework will be available soon. </p>
+<p> A tutorial explaining the installation of the framework will be available soon. </p>
 <p><ul>
 <li><a href="tutorial.html">Tutorial for command-line use</a></li>
 </ul>
@@ -56,26 +54,6 @@
 <p>Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>), Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
 
 <h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/josephhughes">josephhughes</a> and <a href="https://github.com/sejmodha">sejmodha</a> </p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-75119550-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
 
   </body>
 </html>
