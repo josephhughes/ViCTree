@@ -21,7 +21,6 @@
 #		-s Seed Set - Fasta (Required)
 #		-l Hit Length for BLAST (Required)
 #		-c Coverage for BLAST (Required)
-#		-r Run pipeline with specified parameters (Required) 
 #		-h Print usage help message (Optional)									#
 #		-m Specify model for RAxML (Default is PTRGAMMJTT)
 #-------------------------------------------------------------------------------#
@@ -31,7 +30,6 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-s Seedset in fasta format (Required) \n
 		-l Hit Length for BLAST - INT(Required) \n
 		-c Coverage for BLAST -INT(Required) \n
-		-r Run pipeline with specified parameters (Required) \n 
 		-h This helpful message\n
 		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
 		-p Number of threads"`;
@@ -213,5 +211,9 @@ done
 	raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
 	mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
 	cd ..
+
+	git add $tid;
+	git commit -m "Pipeline updated for $tid";
+	git push;
 	
 	;;
