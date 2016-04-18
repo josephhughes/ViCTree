@@ -164,9 +164,6 @@ done
 	cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 	echo "Removing Exact Duplicates";
 	
-	# bash solution to remove exact dups however it doesn't keep track of removed seqs
-	#fasta_formatter -t -i ${tid}_set_seeds_combined.fa  |sort -u -t $'\t' -f -k 2,2  | sed -e 's/^/>/' -e 's/\t/\n/';	
-
 	## Truncate seq ID in fasta file
 	perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
 	# Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
@@ -193,9 +190,8 @@ done
 	printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 	clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
 	#Format matrix file for visualization
-	sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "|sed 's/ /,/g' > $tid/${tid}_clustalo_dist_mat.csv
-	header=`cut -f1 -d ',' $tid/${tid}_clustalo_dist_mat.csv| tr '\n' ',' `
-	#sed -i "1ispecies,"$header"" $tid/${tid}_clustalo_dist_mat.csv
+	sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "|sed 's/ /,/g' 
+	header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ',' `
 	sed -i "1ispecies,"$header"" $tid/${tid}.csv
 
 	rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_checked.fa*  $tid/${tid}_blastp.txt
