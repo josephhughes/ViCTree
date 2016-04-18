@@ -160,7 +160,7 @@ done
 	perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
 	echo "Gathering metadata";
 	bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid} 
-	mv ${tid}_metadata ${tid}/${tid}_metadata 
+	mv ${tid}_metadata ${tid}/${tid}_label.csv 
 	
 	#combine seeds and blast sets
 	cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
@@ -197,8 +197,9 @@ done
 	#Format matrix file for visualization
 	sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "|sed 's/ /,/g' > $tid/${tid}_clustalo_dist_mat.csv
 	header=`cut -f1 -d ',' $tid/${tid}_clustalo_dist_mat.csv| tr '\n' ',' `
-	sed -i "1ispecies,"$header"" $tid/${tid}_clustalo_dist_mat.csv
-	
+	#sed -i "1ispecies,"$header"" $tid/${tid}_clustalo_dist_mat.csv
+	sed -i "1ispecies,"$header"" $tid/${tid}.csv
+
 	rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_checked.fa*  $tid/${tid}_blastp.txt
 
 
@@ -210,7 +211,7 @@ done
 	raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
 	#Reroot the tree
 	raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
-	mv RAxML_rootedTree.${tid}_reroot ${tid}_tree.nhx
+	mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
 	cd ..
 	
 	;;
