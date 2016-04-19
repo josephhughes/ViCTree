@@ -44,7 +44,7 @@ my $factory = Bio::DB::EUtilities->new(-eutil   => 'efetch',
  
 my @accs = split(m{\n},$factory->get_Response->content);
  
-	print "Genome Accession:".join(',',@accs), "\n";
+	print "Genome Accession:".join(',',@accs),"\n";
 
 	}
 }
