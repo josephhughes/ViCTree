@@ -42,7 +42,7 @@ fi
 
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
-threads="2";
+threads='2';
 while getopts t:s:l:c:m:p:h flag; do
   case $flag in
 
@@ -137,12 +137,15 @@ done
 #Processing begins here
 printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
 echo "-----------------Running Step 1 of Pipeline --------------------";
-
-perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
+#perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
+echo  "Downloading sequences from NCBI"
+esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|efetch -format fasta > $tid/$tid.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
 printf "Sequences downloaded successfully now running sanity check on them\n";
 perl SanityCheck.pl $tid/$tid.fa $tid/${tid}_checked.fa;
+# re-format sequences to suit newer version of NCBI fasta headers
+sed -i 's/gi|[0-9]*|[a-z]*|//g;s/|//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
 
 echo "-----------------Running Step 3 of Pipeline --------------------";	
 printf "Creating BLAST databases\n";
@@ -158,22 +161,25 @@ echo "-----------------Running Step 5 of Pipeline --------------------";
 printf "Compiling Sequences \n";
 
 perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
-perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
+grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
+#perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
 echo "Gathering metadata";
-bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid}
+#bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid}
+bash CollectMetadata.sh $tid/${tid}_filtered.txt ${tid}/${tid}_label.csv
 
-if [[ -e ${tid}_metadata ]] 
-	then
-		mv ${tid}_metadata ${tid}/${tid}_label.csv }
-else 
-	printf "${tid}_metadata does not exist." 
-	exit 1;
-fi
+#if [[ -e ${tid}_metadata ]] 
+#	then
+#		mv ${tid}_metadata ${tid}/${tid}_label.csv 
+#else 
+#	printf "${tid}_metadata does not exist." 
+#	exit 1;
+#fi
+
 #combine seeds and blast sets
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 echo "Removing Exact Duplicates";
 	
-## Truncate seq ID in fasta file
+## Truncate seq ID in fasta file 
 perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
 # Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
 awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
@@ -199,11 +205,11 @@ echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
 #Format matrix file for visualization
-sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " " 
-header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ',' `
-sed -i "1ispecies,"$header";s/ /,/g" $tid/${tid}.csv 
+sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
+header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
+sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 
-rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_checked.fa*  $tid/${tid}_blastp.txt
+rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa  $tid/${tid}_blastp.txt #$tid/${tid}_checked.fa* 
 
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
@@ -223,12 +229,13 @@ else
 	exit 1;
 fi
 cd ..
-# cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
-# 
-# git add $tid
-# git commit -m "Pipeline updated for $tid"
-# git push
-# cd phylotree
-# git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
-# git commit -m "Data files updated for $tid"
-# git push
+
+cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
+
+git add $tid
+git commit -m "Pipeline updated for $tid"
+git push
+cd phylotree
+git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
+git commit -m "Data files updated for $tid"
+git push

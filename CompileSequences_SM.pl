@@ -28,40 +28,32 @@ while( my $seq = $seq_in->next_seq() ) {
   my $id=$seq->display_id();
  
   if ($ids{$id}){
-	# rename the id according to accession number and organism name
-   # my $gi=$1 if $id=~/gi\|(\d+)\|.+/;
     my $gi = $id;
-    #print $gi ."\n";
     $seq->display_id($gi);
     $seq_out->write_seq($seq);
     my $factory = Bio::DB::EUtilities->new(-eutil  => 'elink',
                                        -email  => 'mymail@foo.bar',
                                        -db     => 'taxonomy',
                                        -dbfrom => 'protein',
-                                       -id     => $gi);
-    # iterate through the LinkSet objects
+				       -term => "ALS03998",
+					-rettype => 'uid');
     my ($taxid);
+    print $taxid;
     while (my $ds = $factory->next_LinkSet) {
-     #print "   Link name: ",$ds->get_link_name,"\n";
-    #print "Protein IDs: ",join(',',$ds->get_submitted_ids),"\n";
     $taxid=join(',',$ds->get_ids),"\n";
-    #print "    Taxid: ",join(',',$ds->get_ids),"\n";
-    #print "$taxid\n";
     my $factory = Bio::DB::EUtilities->new(-eutil => 'esummary',
                                                 -email => 'mymail@foo.bar',
                                                 -db    => 'taxonomy',
                                                 -id    => $taxid );
      my ($name)  = $factory->next_DocSum->get_contents_by_name('ScientificName');
-    # print "$name\n";
 ####Edited by SM - need to fix the STDOUT error
    system ($lineage=`xmllint  --xpath "/eSearchResult/IdList/Id/text()" "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=taxonomy&term=${name}[SCIN]"| xargs -I TAXON xmllint --noout --xpath "/TaxaSet/Taxon/Lineage/text()" "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=taxonomy&id=TAXON&retmode=xml&rettype=full"`);
 
-   print "$lineage\n";
+  print "$lineage\n";
 
-   print TABLE "$gi\tTAXONOMY_ID:$taxid\tTAXONOMY_ID_PROVIDER:ncbi\tTAXONOMY_SN:$name\tSEQ_ACCESSION:$gi\tSEQ_ACCESSION_SOURCE:gi\tSEQ_ANNOTATION_DESC:$id\tLINEAGE:$lineage\n";
+  print TABLE "$gi\tTAXONOMY_ID:$taxid\tTAXONOMY_ID_PROVIDER:ncbi\tTAXONOMY_SN:$name\tSEQ_ACCESSION:$gi\tSEQ_ACCESSION_SOURCE:gi\tSEQ_ANNOTATION_DESC:$id\tLINEAGE:$lineage\n";
 }
   }elsif (!$ids{$id}){
-    #print "$id does not exist in the file $list\n";	
   }	
 }
 
