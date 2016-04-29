@@ -134,12 +134,39 @@ while getopts t:s:l:c:m:p:h flag; do
   esac
 done
 
+shift $(($OPTIND - 1))
+
+if [ -z $taxid ]
+then
+    printf "\nTaxonomy ID must be specified with -t parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $cover ]
+then
+    printf "\nBLAST coverage must be specified with -c parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $len ]
+then
+    printf  "\nBLAST length must be specified with -l parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $seeds ]
+then
+    printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
+    exit 1
+fi
+
+
 #Processing begins here
 printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
 echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
-esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|efetch -format fasta > $tid/$tid.fa
+esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|efetch -format fasta > $tid/${tid}.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
 printf "Sequences downloaded successfully now running sanity check on them\n";
