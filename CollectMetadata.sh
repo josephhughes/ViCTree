@@ -6,7 +6,7 @@
 #########################################################################################################
 
 touch $2
-echo "Protein Accession,Taxonomy ID,Species Name,Genome Accession,Lineage,Genus,URL" > $2
+echo "ProteinAccession,TaxonomyID,SpeciesName,GenomeAccession,Lineage,Genus,URL" > $2
 while read line
 do
 {

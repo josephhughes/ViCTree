@@ -1,28 +1,28 @@
 #!/bin/bash
 
 ########################## ICTV Pipeline ########################################
-# This script is written by Sejal Modha											#
-#																				#
-# This script can be used to download sequences from NCBI						#
-# and process them through this pipeline and produce a raxML tree as output		#
+# This script is written by Sejal Modha						#
+#										#
+# This script can be used to download sequences from NCBI			#
+# and process them through this pipeline and produce a raxML tree as output	#
 #-------------------------------------------------------------------------------#
-# This script is hardcoded to 													#
-#	* Use a number of scripts including 										#
-#		* DownloadProteinForTaxid.pl											#
-#		* SanityCheck.pl														#
-#		* BlastParseToList.pl													#
-#		* CompileSequences.pl													#
-#	  	* remove_subseq.pl														#
-#																				#
-# Usage:																		#
-#	./ICTV_pipeline <options>													#
-#	 OPTIONS:																	#
-#		-t Taxa ID (Required)
-#		-s Seed Set - Fasta (Required)
-#		-l Hit Length for BLAST (Required)
-#		-c Coverage for BLAST (Required)
-#		-h Print usage help message (Optional)									#
-#		-m Specify model for RAxML (Default is PTRGAMMJTT)
+# This script is hardcoded to 							#
+#	* Use a number of scripts including 					#
+#		* DownloadProteinForTaxid.pl					#
+#		* SanityCheck.pl						#
+#		* BlastParseToList.pl						#
+#		* CompileSequences.pl						#
+#	  	* remove_subseq.pl						#
+#										#
+# Usage:									#
+#	./ICTV_pipeline <options>						#
+#	 OPTIONS:								#
+#		-t Taxa ID (Required)						#
+#		-s Seed Set - Fasta (Required)					#
+#		-l Hit Length for BLAST (Required)				#
+#		-c Coverage for BLAST (Required)				#
+#		-h Print usage help message (Optional)				#
+#		-m Specify model for RAxML (Default is PTRGAMMJTT)		#
 #-------------------------------------------------------------------------------#
 
 usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
@@ -134,38 +134,39 @@ while getopts t:s:l:c:m:p:h flag; do
   esac
 done
 
-shift $(($OPTIND - 1))
-
-if [ -z $taxid ]
-then
-    printf "\nTaxonomy ID must be specified with -t parameter\n" >&2
-    exit 1
-fi
-
-if [ -z $cover ]
-then
-    printf "\nBLAST coverage must be specified with -c parameter\n" >&2
-    exit 1
-fi
-
-if [ -z $len ]
-then
-    printf  "\nBLAST length must be specified with -l parameter\n" >&2
-    exit 1
-fi
-
-if [ -z $seeds ]
-then
-    printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
-    exit 1
-fi
-
-
-#Processing begins here
-printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
+# shift $(($OPTIND - 1))
+# 
+# if [ -z $taxid ]
+# then
+#     printf "\nTaxonomy ID must be specified with -t parameter\n" >&2
+#     exit 1
+# fi
+# 
+# if [ -z $cover ]
+# then
+#     printf "\nBLAST coverage must be specified with -c parameter\n" >&2
+#     exit 1
+# fi
+# 
+# if [ -z $len ]
+# then
+#     printf  "\nBLAST length must be specified with -l parameter\n" >&2
+#     exit 1
+# fi
+# 
+# if [ -z $seeds ]
+# then
+#     printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
+#     exit 1
+# fi
+# 
+# 
+# #Processing begins here
+# printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
 echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
+echo $tid;
 esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|efetch -format fasta > $tid/${tid}.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
