@@ -134,35 +134,35 @@ while getopts t:s:l:c:m:p:h flag; do
   esac
 done
 
-# shift $(($OPTIND - 1))
-# 
-# if [ -z $taxid ]
-# then
-#     printf "\nTaxonomy ID must be specified with -t parameter\n" >&2
-#     exit 1
-# fi
-# 
-# if [ -z $cover ]
-# then
-#     printf "\nBLAST coverage must be specified with -c parameter\n" >&2
-#     exit 1
-# fi
-# 
-# if [ -z $len ]
-# then
-#     printf  "\nBLAST length must be specified with -l parameter\n" >&2
-#     exit 1
-# fi
-# 
-# if [ -z $seeds ]
-# then
-#     printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
-#     exit 1
-# fi
-# 
-# 
-# #Processing begins here
-# printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
+shift $(($OPTIND - 1))
+
+if [ -z $taxid ]
+then
+    printf "\nTaxonomy ID must be specified with -t parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $cover ]
+then
+    printf "\nBLAST coverage must be specified with -c parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $len ]
+then
+    printf  "\nBLAST length must be specified with -l parameter\n" >&2
+    exit 1
+fi
+
+if [ -z $seeds ]
+then
+    printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
+    exit 1
+fi
+
+
+#Processing begins here
+printf "\nNow Downloading all protein sequences from NCBI for taxid $tid \n";
 echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
@@ -194,14 +194,6 @@ grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ {
 echo "Gathering metadata";
 #bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid}
 bash CollectMetadata.sh $tid/${tid}_filtered.txt ${tid}/${tid}_label.csv
-
-#if [[ -e ${tid}_metadata ]] 
-#	then
-#		mv ${tid}_metadata ${tid}/${tid}_label.csv 
-#else 
-#	printf "${tid}_metadata does not exist." 
-#	exit 1;
-#fi
 
 #combine seeds and blast sets
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
@@ -243,27 +235,16 @@ rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
 printf "RAxML model is set to $raxml \n\n";
-cd $tid;
-printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc \n";
-raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
-
-#Reroot the tree
-raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
-if [[ -e RAxML_rootedTree.${tid}_reroot ]] 
-then
-	mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
-else
-	printf "RAxML_rootedTree.${tid}_reroot does not exist";
-	exit 1;
-fi
-cd ..
+ cd $tid;
 
 cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
 
+git pull
 git add $tid
 git commit -m "Pipeline updated for $tid"
 git push
 cd phylotree
+git pull
 git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
 git commit -m "Data files updated for $tid"
 git push
