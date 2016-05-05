@@ -34,6 +34,8 @@
 <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
 <p> ViCTree can be installed on any UNIX/LINUX machine. This pipeline is tested and works on Ubuntu machines with multiple cores. </p>
+<p> It can be downloaded from github using following command </p>
+<pre> <code> git clone -r https://github.com/josephhughes/ViCTree.git </code> </pre> 
 
 <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites</h3>
@@ -51,10 +53,22 @@
 <p> Download ViCTree package or clone ViCTree from this page and make sure all scripts are available in $PATH. </p>
 <h3>
 <a id="running ViCTree" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running ViCTree</h3>
-<p> To run the ViCTree pipeline you will need to specify 2 prior parameters </p>
+<pre> <code> Usage: ICTV_pipeline [OPTIONS]
+
+	-t Taxonomy ID - INT (Required)
+	-s Seedset in fasta format (Required)
+	-l Hit Length for BLAST - INT (Required)
+	-c Coverage for BLAST - INT (Required)
+	-h This helpful message
+	-m Specify model for RAxML (Default model is PTRGAMMJTT)
+	-p Number of threads
+</code> </pre>
+
+<p> To run the ViCTree pipeline you will need to identify two mandatory parameters </p>
 <p><ul>
-<li>The NCBI taxID of virus family or sub-family (e.g. 40120)</li>
-<li>The seed set of sequences in a .fasta formatted file - This file should contain fasta protein sequences representing the known diversity of the virus family or sub-family of interest</li>
+<li>The NCBI taxonomy ID of virus family or sub-family (e.g. 40120)</li>
+<li>The seed set of sequences in a .fasta formatted file - This file should contain fasta protein sequences representing the known diversity of the virus family or sub-family of interest. 
+<p>It is recommended to use protein accession number as header in order to retrieve metadata from NCBI as part of the pipeline. </p></li>
 </ul>
 </p>
 <p>The following command will launch the ViCTree analysis pipeline for <I>Densovirinae</I> sub-family </p>
@@ -106,6 +120,11 @@
 </tr>
 </tbody>
 </table>
+
+<h3>
+<a id="visualisation" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualisation</h3>
+<p><a href="https://github.com/anilthanki/phylotree"> Phylotree </a> is a visualisation plugin for ViCTree. This is a customised Phylogenetic Tree developed using D3.js. It reads input files from data directory of this repository and displays the phylogenetic tree. </p>
+<p> Phylotree has a scroll bar at the top that corresponds to the pairwise distances between the nodes of the tree. User can select any value between 0 and 100 based on which clusters within the tree can be highlighted. </p>
 
 <p>The ViCTree framework is developed by : </p>
 <p>Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>), Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
