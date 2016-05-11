@@ -22,7 +22,9 @@
 #		-l Hit Length for BLAST (Required)				#
 #		-c Coverage for BLAST (Required)				#
 #		-h Print usage help message (Optional)				#
-#		-m Specify model for RAxML (Default is PTRGAMMJTT)		#
+#		-m Specify model for RAxML (Default is PTRGAMMJTT)	
+#		-i Identity for clustering sequences using cdhit \n	#
+#		-p Number of threads"`;	#
 #-------------------------------------------------------------------------------#
 
 usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
@@ -32,6 +34,7 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-c Coverage for BLAST -INT(Required) \n
 		-h This helpful message\n
 		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
+		-i Identity for clustering sequences using cdhit \n
 		-p Number of threads"`;
 
 if [[ ! $1 ]] 
@@ -43,7 +46,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads='2';
-while getopts t:s:l:c:m:p:h flag; do
+while getopts t:s:l:c:m:p:i:h flag; do
   case $flag in
 
     t)
@@ -123,6 +126,21 @@ while getopts t:s:l:c:m:p:h flag; do
 		printf "No of threads\t: $proc \n"; 	
     fi
 	;;
+	i)
+	identity=`echo "$OPTARG"`;
+	
+	if [[ $identity =~ .*$alpha.* ]]
+    then
+		printf "\n!!!! Invalid sequence identity value: Please enter a valid number of threads !!!! \n";
+		exit 1;
+	elif [[ -z $identity ]]
+	then
+		identity=1.0;
+		printf "Default Identity set to 100% \n";
+	else
+		printf "Identity \t: $identity \n"; 	
+    fi
+	;;
 	
     h)
      	printf "${usage}\n\n";
@@ -156,7 +174,7 @@ fi
 
 if [ -z $seeds ]
 then
-    printf  "\nA seed file must be specified in fasta format using -s parameter\n" >&2
+    printf  "\nSeed file must be specified in fasta format using -s parameter\n" >&2
     exit 1
 fi
 
@@ -191,51 +209,70 @@ printf "Compiling Sequences \n";
 perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
 grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
 #perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
-echo "Gathering metadata";
+cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
+
+
+
+#echo "Gathering metadata";
 #bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid}
-bash CollectMetadata.sh $tid/${tid}_filtered.txt ${tid}/${tid}_label.csv
+#bash CollectMetadata.sh $tid/${tid}_filtered.txt ${tid}/${tid}_label.csv
 
 #combine seeds and blast sets
-cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
-echo "Removing Exact Duplicates";
+#echo "Removing Exact Duplicates";
 	
 ## Truncate seq ID in fasta file 
-perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
+#perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
 # Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
-awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
+#awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
 	
-awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed.fa
-perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_combined_set_dups_removed.fa| tail -n +2 > $tid/${tid}_combined_set_dups_removed_formatted.fa
+#awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed.fa
+#perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_combined_set_dups_removed.fa| tail -n +2 > $tid/${tid}_combined_set_dups_removed_formatted.fa
 	
-echo "Removing Shorter Sequences";
-perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
+#echo "Removing Shorter Sequences";
+#perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
 
 #Throw a warning message for the sequences for which metadata was not found
 #TODO
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
 printf "Grouping identical sequences \n"; 
+cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
+mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
+grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+#Convert cd-hit raw output to csv format
+clstr2txt.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.csv
 
-perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_set_seeds_combined.fa |tail -n +2|paste -d "\t" - - |sed -e 's/>//g' |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
-awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_final_set.fa | cut -f1 > file_with_id_list
-bash find_ids.sh file_with_id_list seq_id_grouped |  sed  -e '1iRepresentative_GI\tProtein_Sequence\tExtended_GI_List' > $tid/${tid}_seq_info 
+#convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
+#clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
+
+bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv
+
+#perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_set_seeds_combined.fa |tail -n +2|paste -d "\t" - - |sed -e 's/>//g' |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
+#awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_final_set.fa | cut -f1 > file_with_id_list
+#bash find_ids.sh file_with_id_list seq_id_grouped |  sed  -e '1iRepresentative_GI\tProtein_Sequence\tExtended_GI_List' > $tid/${tid}_seq_info 
 
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
-clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.phy --outfmt="phy" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
+clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --outfmt="fasta" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
 #Format matrix file for visualization
 sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
-
-rm file_with_id_list seq_id_grouped $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_combined_set_dups_removed_formatted.fa  $tid/${tid}_blastp.txt #$tid/${tid}_checked.fa* 
-
+perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_blastp.txt 
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
 printf "RAxML model is set to $raxml \n\n";
- cd $tid;
+cd $tid;
+printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
+raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
+
+#Reroot the tree
+raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
+mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
+cd ..
 
 cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
 
@@ -248,3 +285,4 @@ git pull
 git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
 git commit -m "Data files updated for $tid"
 git push
+

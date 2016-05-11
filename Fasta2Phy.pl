@@ -11,11 +11,10 @@ print "$infile\n$output\n";
 
 use Bio::AlignIO;
 $in  = Bio::AlignIO->new(-file => "$infile" , '-format' => 'fasta');
-$out = Bio::AlignIO->new(-file => ">$output" , '-format' => 'phylip', interleaved =>0);
+$out = Bio::AlignIO->new(-file => ">$output" , '-format' => 'phylip', interleaved =>1);
     # note: we quote -format to keep older perls from complaining.
 
 while ( my $aln = $in->next_aln() ) {
     $aln->uppercase();
     $out->write_aln($aln);
 }
-
