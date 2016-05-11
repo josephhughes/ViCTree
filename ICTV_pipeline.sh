@@ -208,31 +208,7 @@ printf "Compiling Sequences \n";
 
 perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
 grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
-#perl CompileSequences.pl $tid/${tid}_checked.fa $tid/${tid}_filtered.txt $tid/${tid}_set > /dev/null 2>&1;
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
-
-
-
-#echo "Gathering metadata";
-#bash CollectSequenceInfo.sh -i ${tid}/${tid}_set_table.txt -o ${tid}
-#bash CollectMetadata.sh $tid/${tid}_filtered.txt ${tid}/${tid}_label.csv
-
-#combine seeds and blast sets
-#echo "Removing Exact Duplicates";
-	
-## Truncate seq ID in fasta file 
-#perl -p -i -e 's/>(.+?) .+/>$1/g' $tid/${tid}_set_seeds_combined.fa
-# Sort and group exact same sequences in a table and sort gi to generate a fasta with oldest gi as description and sequence
-#awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_set_seeds_combined.fa |sort -t $'\t' -f -k 2,2 -k 1,1n|awk -F'\t' -v OFS='\t' '{x=$2;$2="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' > ${tid}/${tid}_sequences_grouped
-	
-#awk -F$'\t' '{print ">"$2"\n"$1}' ${tid}/${tid}_sequences_grouped >$tid/${tid}_combined_set_dups_removed.fa
-#perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_combined_set_dups_removed.fa| tail -n +2 > $tid/${tid}_combined_set_dups_removed_formatted.fa
-	
-#echo "Removing Shorter Sequences";
-#perl remove_subseq.pl $tid/${tid}_combined_set_dups_removed_formatted.fa $tid/${tid}_final_set.fa;
-
-#Throw a warning message for the sequences for which metadata was not found
-#TODO
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
 printf "Grouping identical sequences \n"; 
@@ -240,17 +216,12 @@ cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
 mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 #Convert cd-hit raw output to csv format
-clstr2txt.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.csv
+clstr2txt.pl $tid/${tid}_final_set.clstr|sed 's/\t/,/' > $tid/${tid}_final_set_cdhit_clusters.csv
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
-#clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
+clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
 
 bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv
-
-#perl -pe '/^>/ ? print "\n" : chomp' $tid/${tid}_set_seeds_combined.fa |tail -n +2|paste -d "\t" - - |sed -e 's/>//g' |awk -v OFS='\t' -F "\t" '{t=$1; $1=$2; $2=t; print}' | sort | awk -F "\t" '{if($1==seq) {printf("\t%s",$2)} else { printf("\n%s",$0); seq=$1;}};END{printf "\n"}' > seq_id_grouped
-#awk 'BEGIN{RS=">"}NR>1{sub("\n","\t"); gsub("\n",""); print $0}' $tid/${tid}_final_set.fa | cut -f1 > file_with_id_list
-#bash find_ids.sh file_with_id_list seq_id_grouped |  sed  -e '1iRepresentative_GI\tProtein_Sequence\tExtended_GI_List' > $tid/${tid}_seq_info 
-
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
@@ -266,6 +237,7 @@ echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
 printf "RAxML model is set to $raxml \n\n";
 cd $tid;
+rm -f RAxML*
 printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
 raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.phy -n $tid -T $proc
 
@@ -276,13 +248,14 @@ cd ..
 
 cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
 
-git pull
+#git pull
 git add $tid
 git commit -m "Pipeline updated for $tid"
 git push
 cd phylotree
-git pull
+#git pull
 git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
 git commit -m "Data files updated for $tid"
 git push
+
 
