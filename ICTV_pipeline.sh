@@ -48,7 +48,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads='2';
-while getopts t:s:l:c:m:p:i:h flag; do
+while getopts t:s:l:c:m:p:i:n:h flag; do
   case $flag in
 
     t)
@@ -227,7 +227,7 @@ cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
 mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 #Convert cd-hit raw output to csv format
-clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk -F"," '{if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
+clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk -F"," -OFS="," '{if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
