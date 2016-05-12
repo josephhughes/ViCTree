@@ -111,11 +111,11 @@ while getopts t:s:l:c:m:p:i:h flag; do
 		printf "RAxML model set to $raxModel \n";
 	fi	
 	;;
-	p)
+     p)
 	proc=`echo "$OPTARG"`;
 	
 	if [[ $proc =~ .*$alpha.* ]]
-    then
+    	then
 		printf "\n!!!! Invalid Number of Threads: Please enter a valid number of threads !!!! \n";
 		exit 1;
 	elif [[ -z $proc ]]
@@ -124,13 +124,13 @@ while getopts t:s:l:c:m:p:i:h flag; do
 		printf "Default threads $threads \n";
 	else
 		printf "No of threads\t: $proc \n"; 	
-    fi
+	fi
 	;;
-	i)
+     i)
 	identity=`echo "$OPTARG"`;
 	
 	if [[ $identity =~ .*$alpha.* ]]
-    then
+    	then
 		printf "\n!!!! Invalid sequence identity value: Please enter a valid number of threads !!!! \n";
 		exit 1;
 	elif [[ -z $identity ]]
@@ -139,13 +139,22 @@ while getopts t:s:l:c:m:p:i:h flag; do
 		printf "Default Identity set to 100% \n";
 	else
 		printf "Identity \t: $identity \n"; 	
-    fi
+    	fi
 	;;
-	
-    h)
+      n)
+	name=`echo $OPTARG`;
+	if [[ -z $name ]]
+	then
+		name=$tid;
+	else
+		name=$name;
+		printf "\n Name set to $name \n";
+	fi
+	;;	
+      h)
      	printf "${usage}\n\n";
 	;;
-    \?)
+     \?)
 	echo -e "\n Option you selected doesn't exist \n Please use -h flag for usage";
 	exit;
       ;;
@@ -216,7 +225,7 @@ cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
 mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 #Convert cd-hit raw output to csv format
-clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" "," > $tid/${tid}_final_set_cdhit_clusters.csv
+clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk -F"," '{if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
@@ -231,7 +240,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_blastp.txt 
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_blastp.txt $tid/${tid}_checked*
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
@@ -246,7 +255,9 @@ raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n
 mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
 cd ..
 
-cp ${tid}/${tid}.nhx ${tid}/${tid}_label.csv ${tid}/${tid}.csv phylotree/data/
+cp ${tid}/${tid}.nhx phylotree/data/${name}.nhx
+cp ${tid}/${tid}_label.csv phylotree/data/${name}_label.csv
+cp ${tid}/${tid}.csv phylotree/data/${name}.csv
 
 #git pull
 git add $tid
@@ -254,8 +265,8 @@ git commit -m "Pipeline updated for $tid"
 git push
 cd phylotree
 #git pull
-git add data/${tid}.nhx data/${tid}.csv	data/${tid}_label.csv
-git commit -m "Data files updated for $tid"
+git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
+git commit -m "Data files updated for $name"
 git push
 
 
