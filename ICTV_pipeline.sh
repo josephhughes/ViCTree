@@ -22,9 +22,10 @@
 #		-l Hit Length for BLAST (Required)				#
 #		-c Coverage for BLAST (Required)				#
 #		-h Print usage help message (Optional)				#
-#		-m Specify model for RAxML (Default is PTRGAMMJTT)	
-#		-i Identity for clustering sequences using cdhit \n	#
-#		-p Number of threads"`;	#
+#		-m Specify model for RAxML (Default is PTRGAMMJTT)		#
+#		-i Identity for clustering sequences using cdhit 		#
+#		-n Output name of the virus family or sub-family 		#
+#		-p Number of threads"`;						#
 #-------------------------------------------------------------------------------#
 
 usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
@@ -35,6 +36,7 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-h This helpful message\n
 		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
 		-i Identity for clustering sequences using cdhit \n
+		-n Output name of the virus family or sub-family \n
 		-p Number of threads"`;
 
 if [[ ! $1 ]] 
