@@ -227,7 +227,7 @@ cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
 mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 #Convert cd-hit raw output to csv format
-clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk -F"," -OFS="," '{if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
+clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
