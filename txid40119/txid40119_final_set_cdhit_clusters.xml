@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<CDHIT_Clusters GroupNo="100" SequenceNo="1547" xmlns="weizhong-lab.ucsd.edu">
+<CDHIT_Clusters GroupNo="100" SequenceNo="1551" xmlns="weizhong-lab.ucsd.edu">
 <representativeMember Level="1" SequenceNo="6" Length="860">ABC69727
    <member Length="860" Identity="100.00%">ABC69727</member>
    <member Length="860" Identity="100.00%">ABC69727</member>
@@ -17,13 +17,6 @@
    <member Length="656" Identity="95.43%">AHK26981</member>
    <member Length="650" Identity="93.54%">AHK26963</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="5" Length="804">YP_003799996
-   <member Length="804" Identity="100%">YP_003799996</member>
-   <member Length="804" Identity="100.00%">ADK34009</member>
-   <member Length="804" Identity="100.00%">ADK34009</member>
-   <member Length="639" Identity="91.24%">AER93217</member>
-   <member Length="639" Identity="91.86%">ACG75864</member>
-</representativeMember>
 <representativeMember Level="1" SequenceNo="7" Length="804">AKI88073
    <member Length="804" Identity="100%">AKI88073</member>
    <member Length="804" Identity="98.13%">AII82254</member>
@@ -32,6 +25,13 @@
    <member Length="804" Identity="97.89%">AFH96876</member>
    <member Length="804" Identity="97.51%">AFH96872</member>
    <member Length="804" Identity="97.51%">AFH96872</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="5" Length="804">YP_003799996
+   <member Length="804" Identity="100%">YP_003799996</member>
+   <member Length="804" Identity="100.00%">ADK34009</member>
+   <member Length="804" Identity="100.00%">ADK34009</member>
+   <member Length="639" Identity="91.24%">AER93217</member>
+   <member Length="639" Identity="91.86%">ACG75864</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="803">AGS15053
    <member Length="803" Identity="100%">AGS15053</member>
@@ -77,15 +77,6 @@
 <representativeMember Level="1" SequenceNo="1" Length="796">AII82250
    <member Length="796" Identity="100%">AII82250</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="7" Length="793">AEM37610
-   <member Length="793" Identity="100.00%">AEM37610</member>
-   <member Length="793" Identity="100.00%">AEM37601</member>
-   <member Length="793" Identity="99.87%">AEM37597</member>
-   <member Length="793" Identity="100.00%">AEM37593</member>
-   <member Length="793" Identity="100.00%">AEM37589</member>
-   <member Length="793" Identity="100.00%">AEM37593</member>
-   <member Length="793" Identity="100.00%">AEM37610</member>
-</representativeMember>
 <representativeMember Level="1" SequenceNo="16" Length="793">AKG54784
    <member Length="793" Identity="100%">AKG54784</member>
    <member Length="793" Identity="96.97%">AKG54762</member>
@@ -103,6 +94,15 @@
    <member Length="648" Identity="98.92%">AFH96884</member>
    <member Length="648" Identity="98.30%">AES86015</member>
    <member Length="644" Identity="98.91%">AFH96902</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="7" Length="793">AEM37610
+   <member Length="793" Identity="100.00%">AEM37610</member>
+   <member Length="793" Identity="100.00%">AEM37601</member>
+   <member Length="793" Identity="99.87%">AEM37597</member>
+   <member Length="793" Identity="100.00%">AEM37593</member>
+   <member Length="793" Identity="100.00%">AEM37589</member>
+   <member Length="793" Identity="100.00%">AEM37593</member>
+   <member Length="793" Identity="100.00%">AEM37610</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="789">YP_009229908
    <member Length="789" Identity="100%">YP_009229908</member>
@@ -575,12 +575,12 @@
 <representativeMember Level="1" SequenceNo="1" Length="720">AFK85003
    <member Length="720" Identity="100%">AFK85003</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="1" Length="718">AGS15039
-   <member Length="718" Identity="100%">AGS15039</member>
-</representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="718">YP_009215301
    <member Length="718" Identity="100%">YP_009215301</member>
    <member Length="718" Identity="100.00%">ALT04901</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="1" Length="718">AGS15039
+   <member Length="718" Identity="100%">AGS15039</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="3" Length="711">AAB82733
    <member Length="711" Identity="100%">AAB82733</member>
@@ -670,11 +670,6 @@
 <representativeMember Level="1" SequenceNo="2" Length="672">AAF61213
    <member Length="672" Identity="100.00%">AAF61213</member>
    <member Length="672" Identity="100.00%">AAF61213</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="3" Length="671">AAC40693
-   <member Length="671" Identity="100%">AAC40693</member>
-   <member Length="671" Identity="99.70%">AFV67813</member>
-   <member Length="671" Identity="100.00%">AAC40694</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="236" Length="671">AKQ44381
    <member Length="671" Identity="100%">AKQ44381</member>
@@ -914,6 +909,14 @@
    <member Length="190" Identity="95.79%">ACF17844</member>
    <member Length="180" Identity="98.89%">AGF33862</member>
 </representativeMember>
+<representativeMember Level="1" SequenceNo="3" Length="671">AAC40693
+   <member Length="671" Identity="100%">AAC40693</member>
+   <member Length="671" Identity="99.70%">AFV67813</member>
+   <member Length="671" Identity="100.00%">AAC40694</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="1" Length="668">AHA86835
+   <member Length="668" Identity="100%">AHA86835</member>
+</representativeMember>
 <representativeMember Level="1" SequenceNo="176" Length="668">ALO18546
    <member Length="668" Identity="100%">ALO18546</member>
    <member Length="668" Identity="99.10%">AKI88070</member>
@@ -1092,21 +1095,17 @@
    <member Length="668" Identity="98.95%">AET75112</member>
    <member Length="658" Identity="99.70%">AFX67057</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="1" Length="668">AHA86835
-   <member Length="668" Identity="100%">AHA86835</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="2" Length="667">YP_009010974
-   <member Length="667" Identity="100%">YP_009010974</member>
-   <member Length="667" Identity="100.00%">AGY46253</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="2" Length="667">AHK26987
-   <member Length="667" Identity="100%">AHK26987</member>
-   <member Length="667" Identity="96.10%">AHK26975</member>
+<representativeMember Level="1" SequenceNo="1" Length="667">AGS15085
+   <member Length="667" Identity="100%">AGS15085</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="3" Length="667">AIY27459
    <member Length="667" Identity="100%">AIY27459</member>
    <member Length="667" Identity="97.90%">AHK26966</member>
    <member Length="667" Identity="97.90%">AEF33726</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="2" Length="667">YP_009010974
+   <member Length="667" Identity="100%">YP_009010974</member>
+   <member Length="667" Identity="100.00%">AGY46253</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="5" Length="667">YP_005086948
    <member Length="667" Identity="100%">YP_005086948</member>
@@ -1115,11 +1114,15 @@
    <member Length="667" Identity="100.00%">AEX30511</member>
    <member Length="667" Identity="100.00%">AEX30511</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="1" Length="667">AGS15085
-   <member Length="667" Identity="100%">AGS15085</member>
+<representativeMember Level="1" SequenceNo="2" Length="667">AHK26987
+   <member Length="667" Identity="100%">AHK26987</member>
+   <member Length="667" Identity="96.10%">AHK26975</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="1" Length="665">AFV48069
    <member Length="665" Identity="100%">AFV48069</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="1" Length="664">AFD01617
+   <member Length="664" Identity="100%">AFD01617</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="8" Length="664">ACU30841
    <member Length="664" Identity="100%">ACU30841</member>
@@ -1130,9 +1133,6 @@
    <member Length="662" Identity="95.77%">AAT48612</member>
    <member Length="662" Identity="95.77%">AAO32086</member>
    <member Length="662" Identity="95.77%">AAO32086</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="1" Length="664">AFD01617
-   <member Length="664" Identity="100%">AFD01617</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="45" Length="663">AIC33858
    <member Length="663" Identity="100%">AIC33858</member>
@@ -1347,39 +1347,40 @@
    <member Length="641" Identity="100.00%">AID57413</member>
    <member Length="450" Identity="100.00%">NYGMVTTSNPNFPWTDCGN</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="6" Length="641">AME15910
+<representativeMember Level="1" SequenceNo="18" Length="641">ANC57660
+   <member Length="641" Identity="100%">ANC57660</member>
+   <member Length="641" Identity="92.67%">ANC57655</member>
+   <member Length="641" Identity="92.67%">ANC57650</member>
+   <member Length="641" Identity="92.67%">ANC57645</member>
+   <member Length="641" Identity="92.36%">ADB55714</member>
+   <member Length="641" Identity="93.29%">AEK27531</member>
+   <member Length="641" Identity="93.60%">ACY54681</member>
+   <member Length="641" Identity="90.95%">ACY54678</member>
+   <member Length="641" Identity="93.60%">CAA54349</member>
+   <member Length="641" Identity="98.13%">CAA54355</member>
+   <member Length="590" Identity="92.03%">P24030</member>
+   <member Length="590" Identity="92.03%">NP_042872</member>
+   <member Length="590" Identity="92.03%">AAA66612</member>
+   <member Length="590" Identity="92.03%">AAA66612</member>
+   <member Length="590" Identity="92.03%">AAA66612</member>
+   <member Length="546" Identity="92.67%">AME15917</member>
+   <member Length="546" Identity="91.58%">AME15916</member>
+   <member Length="346" Identity="93.35%">AIZ65649</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="4" Length="641">AME15910
    <member Length="641" Identity="100%">AME15910</member>
    <member Length="641" Identity="94.85%">AME15895</member>
-   <member Length="546" Identity="90.29%">AME15917</member>
    <member Length="546" Identity="92.12%">AME15915</member>
-   <member Length="346" Identity="92.49%">AIZ65649</member>
    <member Length="302" Identity="92.38%">AME15918</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="5" Length="641">AME15905
-   <member Length="641" Identity="100%">AME15905</member>
-   <member Length="641" Identity="90.80%">AME15900</member>
-   <member Length="641" Identity="92.20%">AME15890</member>
-   <member Length="641" Identity="90.02%">CAA54355</member>
-   <member Length="546" Identity="91.03%">AME15916</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="641">ALA40028
    <member Length="641" Identity="100%">ALA40028</member>
    <member Length="641" Identity="90.02%">CAA54352</member>
 </representativeMember>
-<representativeMember Level="1" SequenceNo="3" Length="641">ADB55714
-   <member Length="641" Identity="100%">ADB55714</member>
-   <member Length="641" Identity="91.89%">ACY54681</member>
-   <member Length="641" Identity="91.58%">ACY54678</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="8" Length="641">AEK27531
-   <member Length="641" Identity="100%">AEK27531</member>
-   <member Length="641" Identity="97.97%">CAA54349</member>
-   <member Length="620" Identity="93.71%">CAA66227</member>
-   <member Length="590" Identity="99.15%">P24030</member>
-   <member Length="590" Identity="99.15%">NP_042872</member>
-   <member Length="590" Identity="99.15%">AAA66612</member>
-   <member Length="590" Identity="99.15%">AAA66612</member>
-   <member Length="590" Identity="99.15%">AAA66612</member>
+<representativeMember Level="1" SequenceNo="3" Length="641">AME15905
+   <member Length="641" Identity="100%">AME15905</member>
+   <member Length="641" Identity="90.80%">AME15900</member>
+   <member Length="641" Identity="92.20%">AME15890</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="639">YP_009130650
    <member Length="639" Identity="100%">YP_009130650</member>
@@ -1393,9 +1394,6 @@
    <member Length="636" Identity="99.21%">ADP36995</member>
    <member Length="636" Identity="99.21%">ADP36995</member>
    <member Length="552" Identity="99.46%">AHK27002</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="1" Length="636">ADN44566
-   <member Length="636" Identity="100%">ADN44566</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="102" Length="636">ALW83499
    <member Length="636" Identity="100%">ALW83499</member>
@@ -1500,6 +1498,9 @@
    <member Length="298" Identity="97.65%">AKH61336</member>
    <member Length="298" Identity="98.66%">AKH61335</member>
    <member Length="298" Identity="96.98%">AKH61334</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="1" Length="636">ADN44566
+   <member Length="636" Identity="100%">ADN44566</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="2" Length="635">AIC77176
    <member Length="635" Identity="99.84%">AIC77176</member>
@@ -1645,20 +1646,13 @@
    <member Length="312" Identity="98.08%">AAC03776</member>
    <member Length="312" Identity="98.08%">AAA42373</member>
 </representativeMember>
+<representativeMember Level="1" SequenceNo="1" Length="620">CAA66227
+   <member Length="620" Identity="100%">CAA66227</member>
+</representativeMember>
 <representativeMember Level="1" SequenceNo="3" Length="613">YP_003858571
    <member Length="613" Identity="100%">YP_003858571</member>
    <member Length="613" Identity="100.00%">ADD17085</member>
    <member Length="613" Identity="100.00%">ADD17085</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="4" Length="610">AJE25862
-   <member Length="610" Identity="100%">AJE25862</member>
-   <member Length="610" Identity="98.52%">YP_024970</member>
-   <member Length="610" Identity="98.52%">AAR26464</member>
-   <member Length="610" Identity="98.52%">AAR26464</member>
-</representativeMember>
-<representativeMember Level="1" SequenceNo="2" Length="610">ALR74754
-   <member Length="610" Identity="100%">ALR74754</member>
-   <member Length="579" Identity="96.03%">AMY15605</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="6" Length="610">YP_068408
    <member Length="610" Identity="100%">YP_068408</member>
@@ -1667,6 +1661,16 @@
    <member Length="610" Identity="100.00%">CAA77023</member>
    <member Length="610" Identity="100.00%">AAD13755</member>
    <member Length="610" Identity="99.34%">ABC69725</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="2" Length="610">ALR74754
+   <member Length="610" Identity="100%">ALR74754</member>
+   <member Length="579" Identity="96.03%">AMY15605</member>
+</representativeMember>
+<representativeMember Level="1" SequenceNo="4" Length="610">AJE25862
+   <member Length="610" Identity="100%">AJE25862</member>
+   <member Length="610" Identity="98.52%">YP_024970</member>
+   <member Length="610" Identity="98.52%">AAR26464</member>
+   <member Length="610" Identity="98.52%">AAR26464</member>
 </representativeMember>
 <representativeMember Level="1" SequenceNo="7" Length="601">YP_008888533
    <member Length="601" Identity="100%">YP_008888533</member>
