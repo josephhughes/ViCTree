@@ -12,9 +12,9 @@ do
 {
 	taxid=`elink -db protein -id "$line" -target taxonomy | efetch -format uid`
 	sciname=`elink -db protein -id "$line" -target taxonomy | esummary |xtract -element ScientificName`
-	lineage=`elink -db protein -id "$line" -target taxonomy | efetch -format xml|xtract -pattern TaxaSet -element Lineage|sed 's/; /;/g'`
+	lineage=`elink -db protein -id "$line" -target taxonomy | efetch -format xml|xtract -pattern TaxaSet -element Lineage|sed 's/; /;/g;s/, /-/g'`
 	genomeacc=`elink -db protein -id "$line" -target nuccore|efetch -format acc`
-	genus=`echo $lineage|cut -f5 -d";"`
+	genus=`echo $lineage|cut -f $3 -d";"`
 	echo $line,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
 	
 	

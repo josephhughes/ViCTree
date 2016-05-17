@@ -55,7 +55,7 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 	taxid=`echo "$OPTARG"`;
 	
 	if [[ $taxid =~ .*$alpha.* ]]
-    then
+    	then
 		printf "\n!!!! Invalid Taxa ID: Please enter a valid Taxa ID !!!! \nExample: 40120\n";
 		exit 1;
 	else
@@ -64,7 +64,7 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 			mkdir $tid;
 		fi
 		printf "\nTaxaID validated \n\nRunning pipeline with following parameters:\n\nTaxa ID\t\t: $tid \n";	
-    fi
+    	fi
 
 	;;
     s)
@@ -94,7 +94,7 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 	cover=`echo "$OPTARG"`;
 	
 	if [[ $cover =~ .*$alpha.* ]]
-    then
+    	then
 		printf "\n!!!! Invalid Coverage Value: Please enter a valid coverage value !!!! \n";
 		exit 1;
 	else
@@ -147,10 +147,20 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 	name=`echo $OPTARG`;
 	if [[ -z $name ]]
 	then
-		name=$tid;
+		printf "\n!!!! Must specify a family or sub-family name !!!! \n"
 	else
 		name=$name;
 		printf "\n Name set to $name \n";
+	fi
+	if [[ $name == *dae ]]
+	then
+		genus="6"
+	elif [[ $name == *nae ]]
+	then
+		genus="5"
+	else
+		printf "\n Virus family or sub-family name must end with either "dae" or "nae" \n"
+
 	fi
 	;;	
       h)
@@ -232,7 +242,7 @@ clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS =
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
 
-bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv
+bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv $genus
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
