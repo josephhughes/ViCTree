@@ -44,7 +44,8 @@
 <li><a href="http://www.bioperl.org/wiki/Main_Page">BioPerl </a> and<a href="ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/"> NCBI Unix EUtilities</a></li>
 <li><a href="http://www.clustal.org/omega/">Clustal-Omega</a></li>	
 <li><a href="https://www.gnu.org/software/bash/">GNU BASH environment</a></li>	
-<li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy/2.2.26/">Legacy BLAST (blastall,formatdb)</a></li>	
+<!-- <li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy/2.2.26/">Legacy BLAST (blastall, formatdb)</a></li> -->
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/">BLAST+ (blastp, makeblastdb)</a></li>	
 <li><a href="http://packages.ubuntu.com/search?keywords=libxml2-utils">libxml2-utils</a></li>
 <li><a href="http://sco.h-its.org/exelixis/web/software/raxml/hands_on.html">RAxML-PThreads</a></li>	
 </ul>
@@ -54,14 +55,16 @@
 <h3>
 <a id="running ViCTree" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running ViCTree</h3>
 <pre> <code> Usage: ICTV_pipeline [OPTIONS]
-
-	-t Taxonomy ID - INT (Required)
-	-s Seedset in fasta format (Required)
-	-l Hit Length for BLAST - INT (Required)
-	-c Coverage for BLAST - INT (Required)
-	-h This helpful message
-	-m Specify model for RAxML (Default model is PTRGAMMJTT)
-	-p Number of threads
+		
+		-t Taxa ID - INT(Required) 
+		-s Seedset in fasta format (Required) 
+		-l Hit Length for BLAST - INT(Required) 
+		-c Coverage for BLAST -INT(Required) 
+		-h This helpful message
+		-m Specify model for RAxML (Default is PTRGAMMJTT)
+		-i Identity for clustering sequences using cdhit 
+		-n Output name of the virus family or sub-family 
+		-p Number of threads
 </code> </pre>
 
 <p> To run the ViCTree pipeline you will need to identify two mandatory parameters </p>
@@ -72,7 +75,7 @@
 </ul>
 </p>
 <p>The following command will launch the ViCTree analysis pipeline for <I>Densovirinae</I> sub-family </p>
-<pre><code>ICTV_pipeline.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10 </code></pre>
+<pre><code>ICTV_pipeline.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10  -i 1.0 -n Densovirinae</code></pre>
 
 <h3>
 <a id="Output" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Output</h3>
