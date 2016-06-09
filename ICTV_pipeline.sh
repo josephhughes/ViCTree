@@ -150,7 +150,7 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 		printf "\n!!!! Must specify a family or sub-family name !!!! \n"
 	else
 		name=$name;
-		printf "\n Name set to $name \n";
+		printf "\nName set to $name \n\n";
 	fi
 	if [[ $name == *dae ]]
 	then
@@ -197,6 +197,18 @@ if [ -z $seeds ]
 then
     printf  "\nSeed file must be specified in fasta format using -s parameter\n" >&2
     exit 1
+fi
+
+if [ -f "$tid/${tid}.fa" ];
+then
+	printf "Previous analysis results exist, checking if any new sequences are submitted to GenBank\n\n"
+	seq=`grep -c  "^>" $tid/${tid}.fa`;
+	count=`esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|xtract -element Count`;
+	if [ "$seq" == "$count" ]
+	then
+		printf "No new sequences available in GenBank, ViCTree analysis for $tid is up-to-date\n\n" 
+		exit 1
+	fi
 fi
 
 
