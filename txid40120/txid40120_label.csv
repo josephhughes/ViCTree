@@ -1,6 +1,6 @@
 ProteinAccession,TaxonomyID,SpeciesName,GenomeAccession,Lineage,Genus,URL
+YP_009256211,1776153,Diaphorina citri densovirus,NC_030296.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Ambidensovirus;unclassified Densovirus,Ambidensovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_030296.1
 AAM28234,1513224,Decapod penstyldensovirus 1,AY102034.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Penstyldensovirus,Penstyldensovirus,http://www.ncbi.nlm.nih.gov/nuccore/AY102034.1
-ALV85426,1776153,Diaphorina citri densovirus,KT698828.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Ambidensovirus;unclassified Densovirus,Ambidensovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT698828.1
 ALS03998,1513224,Decapod penstyldensovirus 1,KT316253.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Penstyldensovirus,Penstyldensovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT316253.1
 ALS03995,1513224,Decapod penstyldensovirus 1,KT316252.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Penstyldensovirus,Penstyldensovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT316252.1
 ALS03992,1513224,Decapod penstyldensovirus 1,KT316251.1,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Penstyldensovirus,Penstyldensovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT316251.1
