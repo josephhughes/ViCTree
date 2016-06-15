@@ -1,7 +1,12 @@
 ProteinAccession,TaxonomyID,SpeciesName,GenomeAccession,Lineage,Genus,URL
-ANC57660,28314,Aleutian mink disease virus,,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Amdoparvovirus;Carnivore amdoparvovirus 1,Amdoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/
+ALR87696,329639,Canine minute virus,KT241026.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Carnivore bocaparvovirus 1,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT241026.1
+ANH58937,544789,Canine parvovirus 2c,KU508407.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;Carnivore protoparvovirus 1;Feline panleukopenia virus;Canine parvovirus;Canine parvovirus 2,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KU508407.1
+ANG60949,37325,Muscovy duck parvovirus,KU589294.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Anseriform dependoparvovirus 1;Duck parvovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KU589294.1
+YP_009186840,1763507,Rat bufavirus SY-2015,NC_028650.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_028650.1
+ALN66860,172296,Bovine parvovirus - 2,KT148961.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Copiparvovirus;Ungulate copiparvovirus 1,Copiparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT148961.1
+P52502,73487,Porcine parvovirus Kresse,,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;Ungulate protoparvovirus 1;Porcine parvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/
+ANC57660,28314,Aleutian mink disease virus,KU513988.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Amdoparvovirus;Carnivore amdoparvovirus 1,Amdoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KU513988.1
 YP_009241376,1756191,Megabat bufavirus 1,NC_029797.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_029797.1
-ALO18546,10792,Mink enteritis virus,KT899745.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;Carnivore protoparvovirus 1;Feline panleukopenia virus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT899745.1
 AMZ04136,1511865,Galliform aveparvovirus 1,KU569162.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Aveparvovirus,Aveparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KU569162.1
 BAU88511,1174530,Feline bocavirus,LC148407.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Carnivore bocaparvovirus 3,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/LC148407.1
 AMY56528,341673,Duck parvovirus,KU947420.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Anseriform dependoparvovirus 1,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KU947420.1
@@ -13,7 +18,6 @@ AAF61213,119755,Pig-tailed macaque parvovirus,AF221123.1,Viruses;ssDNA viruses;P
 AAC40693,74581,Rat parvovirus 1,AF036710.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;Rodent protoparvovirus 2,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/AF036710.1
 AAB95451,68742,Adeno-associated virus 3B,AF028705.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Adeno-associated dependoparvovirus A;Adeno-associated virus - 3,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/AF028705.1
 AAB82733,56820,Chipmunk parvovirus,U86868.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Erythroparvovirus;Rodent erythroparvovirus 1,Erythroparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/U86868.1
-AMO03312,37325,Muscovy duck parvovirus,KT865605.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Anseriform dependoparvovirus 1;Duck parvovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT865605.1
 AKI88073,1174530,Feline bocavirus,KP769860.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Carnivore bocaparvovirus 3,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KP769860.1
 YP_009229908,1329649,Bat bocavirus,NC_029300.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_029300.1
 AME15910,28314,Aleutian mink disease virus,KT878962.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Amdoparvovirus;Carnivore amdoparvovirus 1,Amdoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT878962.1
@@ -22,24 +26,17 @@ YP_009227290,1788315,Rat bocavirus,NC_029133.1,Viruses;ssDNA viruses;Parvovirida
 YP_009215301,1769949,Rabbit bocaparvovirus,NC_028973.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_028973.1
 YP_009175068,1511914,Ungulate tetraparvovirus 1,NC_028136.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Tetraparvovirus,Tetraparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_028136.1
 AKQ44381,1511900,Primate erythroparvovirus 1,KT268312.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Erythroparvovirus,Erythroparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT268312.1
-ALR87696,329639,Canine minute virus,KT241026.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Carnivore bocaparvovirus 1,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT241026.1
 ALR74754,1755694,Protoparvovirus Zsana/2013/HUN,KT965075.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT965075.1
-YP_009186840,1763507,Rat bufavirus SY-2015,NC_028650.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_028650.1
 Q89268,648242,Adeno-associated virus 2 Srivastava/1982,,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Adeno-associated dependoparvovirus A;Adeno-associated virus - 2,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/
-ALN66860,172296,Bovine parvovirus - 2,KT148961.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Copiparvovirus;Ungulate copiparvovirus 1,Copiparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KT148961.1
 BAS32608,1391667,Bufavirus-3,AB982223.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;unclassified Parvovirinae,unclassified Parvovirinae,http://www.ncbi.nlm.nih.gov/nuccore/AB982223.1
 ALJ96713,1472911,Porcine parvovirus 6,KR709268.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KR709268.1
 AKG54800,1108949,Canine bocavirus,KP281720.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KP281720.1
 AKG54784,1108949,Canine bocavirus,KP281718.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KP281718.1
 AIC33030,1165907,Porcine bocavirus,KJ622366.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KJ622366.1
-P52502,73487,Porcine parvovirus Kresse,,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;Ungulate protoparvovirus 1;Porcine parvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/
 BAR72999,1580060,Mfuwe bufavirus,LC011425.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/LC011425.1
 YP_009130650,1580058,Mpulungu bufavirus,NC_026815.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_026815.1
 YP_009154712,1670662,Bearded dragon parvovirus,NC_027429.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;unclassified Dependovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_027429.1
-AKM49966,1670663,Corn snake parvovirus,KP733795.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;unclassified Dependovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KP733795.1
 AJE25862,256548,Bovine adeno-associated virus,KP264981.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Adeno-associated dependoparvovirus B,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KP264981.1
-AIF74223,1514704,Bat parvovirus,KJ641671.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;unclassified Parvovirinae,unclassified Parvovirinae,http://www.ncbi.nlm.nih.gov/nuccore/KJ641671.1
-AIF74220,1514704,Bat parvovirus,KJ641670.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;unclassified Parvovirinae,unclassified Parvovirinae,http://www.ncbi.nlm.nih.gov/nuccore/KJ641670.1
 AIF74198,1514704,Bat parvovirus,KJ641663.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;unclassified Parvovirinae,unclassified Parvovirinae,http://www.ncbi.nlm.nih.gov/nuccore/KJ641663.1
 AIC33858,289365,Human parvovirus 4,KJ541121.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Tetraparvovirus;Primate tetraparvovirus 1,Tetraparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KJ541121.1
 YP_005086948,1131622,Porcine bocavirus 5/JS677,NC_016647.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus;Porcine bocavirus 5,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/NC_016647.1
@@ -67,7 +64,6 @@ AGS15053,1165907,Porcine bocavirus,KF206158.1,Viruses;ssDNA viruses;Parvoviridae
 AGS15039,1165907,Porcine bocavirus,KF206154.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KF206154.1
 AGL09957,1329649,Bat bocavirus,KC339251.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KC339251.1
 AGL09956,1329649,Bat bocavirus,KC339250.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/KC339250.1
-AGA19586,1048219,Porcine bocavirus 1,JX869079.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Ungulate bocaparvovirus 2,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/JX869079.1
 AFV48069,1245561,WUHARV Parvovirus 1,JX627576.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Protoparvovirus;unclassified Protoparvovirus,Protoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/JX627576.1
 AFK85003,1195367,Myotis myotis bocavirus 1,JQ814850.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/JQ814850.1
 AFR53039,329641,Human bocavirus,JQ923422.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;unclassified Bocaparvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/JQ923422.1
@@ -90,9 +86,7 @@ ACR15784,638313,Human bocavirus 3,FJ973562.1,Viruses;ssDNA viruses;Parvoviridae;
 ADF32027,754189,Parvovirus YX-2010/CHN,GU938300.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Tetraparvovirus;Ungulate tetraparvovirus 3;Porcine Cnvirus,Tetraparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/GU938300.1
 AAA74973,31598,Simian parvovirus,U26342.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Erythroparvovirus;Primate erythroparvovirus 2,Erythroparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/U26342.1
 AAL09673,172297,Bovine parvovirus 3,AF406967.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Erythroparvovirus;Ungulate erythroparvovirus 1,Erythroparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/AF406967.1
-ACN42943,607682,Adeno-associated virus - Po1,FJ688147.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;unclassified Dependovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/FJ688147.1
 AAF61212,119756,Rhesus macaque parvovirus,AF221122.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Erythroparvovirus;Primate erythroparvovirus 3,Erythroparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/AF221122.1
-ACJ66590,575982,Serpentine adeno-associated virus 2,EU872429.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;unclassified Dependovirus,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/EU872429.1
 ABI16638,235458,Adeno-associated virus 12,DQ813647.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Dependoparvovirus;Adeno-associated dependoparvovirus A;Adeno-associated virus - 4,Dependoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/DQ813647.1
 ABC69727,365609,Bovine parvovirus-1,DQ335247.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Bocaparvovirus;Ungulate bocaparvovirus 1;Bovine parvovirus,Bocaparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/DQ335247.1
 CAA66227,28314,Aleutian mink disease virus,X97629.1,Viruses;ssDNA viruses;Parvoviridae;Parvovirinae;Amdoparvovirus;Carnivore amdoparvovirus 1,Amdoparvovirus,http://www.ncbi.nlm.nih.gov/nuccore/X97629.1
