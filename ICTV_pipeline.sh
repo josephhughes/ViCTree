@@ -245,7 +245,7 @@ cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
 printf "Grouping identical sequences \n"; 
-cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity
+cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 #Convert cd-hit raw output to csv format
@@ -264,7 +264,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 #perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_set.fa $tid/${tid}_blastp.txt $tid/${tid}_checked*
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa 
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
