@@ -245,14 +245,36 @@ cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
 printf "Grouping identical sequences \n"; 
-cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
-mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
-grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
-#Convert cd-hit raw output to csv format
-clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
+
+#Check if previous cd-hit analysis exist and if any new clusters are formed with newly added sequences
+if [ -f "$tid/${tid}_final_set.clstr" ];
+then
+	printf "Previous cd-hit analysis results exist, checking if any new clusters are formed\n\n"
+	clustold=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
+	printf "Number of clusters in the existing analysis $clust\n\n"
+	
+	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
+	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+	#Convert cd-hit raw output to csv format
+	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
+	cat $tid/${tid}_final_set.clstr | awk '{if ($1 == ">Cluster") {clusterNumber = $2} else {print(clusterNumber"\t"$0)}}' > $tid/${tid}_final_set_cdhit_cluster_counts.csv
+	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
+	#Check if any new clusters are formed with the newly added sequences
+	if [ "$clustold" == "$clustnew" ]
+	then
+		printf "\n\nNo new clusters are formed, ViCTree analysis for $tid is up-to-date\n\n" 
+		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa
+		#push the updated files to github	
+		git add $tid
+		git commit -m "Pipeline updated for $tid"
+		git push
+		exit 1
+	fi
+fi
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
-clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
+#clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
 
 bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv $genus
 
