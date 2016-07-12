@@ -37,7 +37,8 @@ usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
 		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
 		-i Identity for clustering sequences using cdhit \n
 		-n Output name of the virus family or sub-family \n
-		-p Number of threads"`;
+		-p Number of threads \n
+		-u A file with user-defined list of accessions"`;
 
 if [[ ! $1 ]] 
 then
@@ -48,7 +49,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads='2';
-while getopts t:s:l:c:m:p:i:n:h flag; do
+while getopts t:s:l:c:m:p:i:n:u:h flag; do
   case $flag in
 
     t)
@@ -137,7 +138,7 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 		exit 1;
 	elif [[ -z $identity ]]
 	then
-		identity=1.0;
+		$identity="1.0";
 		printf "Default Identity set to 100% \n";
 	else
 		printf "Identity \t: $identity \n"; 	
@@ -162,7 +163,17 @@ while getopts t:s:l:c:m:p:i:n:h flag; do
 		printf "\n Virus family or sub-family name must end with either "dae" or "nae" \n"
 
 	fi
-	;;	
+	;;
+      u)
+	ulist=`echo "$OPTARG"`;
+	if [[ ! -f $ulist ]]
+	then
+		printf "\nSpecified accession number file $ulist file does not exist \n \n";
+		exit 1;
+	else
+		printf "Pipeline will re-set the accession numbers according to the\t: $ulist \n";
+	fi
+	;;			
       h)
      	printf "${usage}\n\n";
 	;;
@@ -229,12 +240,14 @@ sed -i 's/gi|[0-9]*|[a-z]*|//g;s/|//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
 echo "-----------------Running Step 3 of Pipeline --------------------";	
 printf "Creating BLAST databases\n";
 	
-formatdb -i $tid/${tid}_checked.fa -p T
+#formatdb -i $tid/${tid}_checked.fa -p T
+makeblastdb -in $tid/${tid}_checked.fa -dbtype 'prot'
 
 echo "-----------------Running Step 4 of Pipeline --------------------";
 printf "Running BLASTP \n";
 
-blastall -p blastp -i $seeds -d $tid/${tid}_checked.fa -o $tid/${tid}_blastp.txt -e 1 -v 1000000 -b 1000000
+#blastall -p blastp -i $seeds -d $tid/${tid}_checked.fa -o $tid/${tid}_blastp.txt -e 1 -v 1000000 -b 1000000
+blastp -query $seeds -db $tid/${tid}_checked.fa -out $tid/${tid}_blastp.txt -evalue 1 -num_alignments 1000000 -num_descriptions 1000000
 
 echo "-----------------Running Step 5 of Pipeline --------------------";
 printf "Compiling Sequences \n";
@@ -258,25 +271,51 @@ then
 	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 	#Convert cd-hit raw output to csv format
 	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
-	cat $tid/${tid}_final_set.clstr | awk '{if ($1 == ">Cluster") {clusterNumber = $2} else {print(clusterNumber"\t"$0)}}' > $tid/${tid}_final_set_cdhit_cluster_counts.csv
+	#cat $tid/${tid}_final_set.clstr | awk '{if ($1 == ">Cluster") {clusterNumber = $2} else {print(clusterNumber"\t"$0)}}' > $tid/${tid}_final_set_cdhit_cluster_counts.csv
 	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
+	## Testing to reset the cluster ID to userdefined list
+	echo "Now resetting the centroids \n"
+	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
+	grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
+	cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
+	grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+
 	#Check if any new clusters are formed with the newly added sequences
 	if [ "$clustold" == "$clustnew" ]
 	then
 		printf "\n\nNo new clusters are formed, ViCTree analysis for $tid is up-to-date\n\n" 
-		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa
+		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/final_id_set
 		#push the updated files to github	
 		git add $tid
 		git commit -m "Pipeline updated for $tid"
 		git push
 		exit 1
 	fi
+else
+	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	#mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
+	#grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+	#Convert cd-hit raw output to csv format
+	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
+	
+	#cat $tid/${tid}_final_set.clstr | awk '{if ($1 == ">Cluster") {clusterNumber = $2} else {print(clusterNumber"\t"$0)}}' > $tid/${tid}_final_set_cdhit_cluster_counts.csv
+	
+	## Testing to reset the cluster ID to userdefined list
+	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
+	echo "Now resetting the centroids"
+	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
+	grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
+	cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
+	grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+
 fi
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 #clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
 
-bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv $genus
+bash CollectMetadata.sh $tid/final_id_set ${tid}/${tid}_label.csv $genus
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
@@ -286,7 +325,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 #perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa 
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/final_id_set
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
@@ -314,5 +353,4 @@ cd phylotree
 git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
 git commit -m "Data files updated for $name"
 git push
-
 
