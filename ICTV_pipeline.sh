@@ -274,13 +274,15 @@ then
 	#cat $tid/${tid}_final_set.clstr | awk '{if ($1 == ">Cluster") {clusterNumber = $2} else {print(clusterNumber"\t"$0)}}' > $tid/${tid}_final_set_cdhit_cluster_counts.csv
 	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
 	## Testing to reset the cluster ID to userdefined list
-	echo "Now resetting the centroids \n"
-	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
-	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
-	grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-	cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
-	grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
-
+	if [ -f "$ulist" ];
+	then
+		echo "Precompiled list of accession is provided, now resetting the centroids \n"
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
+		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
+		cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
+		grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+	fi
 	#Check if any new clusters are formed with the newly added sequences
 	if [ "$clustold" == "$clustnew" ]
 	then
@@ -303,13 +305,16 @@ else
 	
 	## Testing to reset the cluster ID to userdefined list
 	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
-	echo "Now resetting the centroids"
-	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
-	grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
-	grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-	cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
-	grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
-
+	if [ -f "$ulist" ];
+	then
+		echo "Precompiled list of accession is provided, now resetting the centroids \n"
+		echo "Now resetting the centroids"
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
+		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
+		cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
+		grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+	fi
 fi
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
