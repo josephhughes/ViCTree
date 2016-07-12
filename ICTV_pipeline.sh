@@ -280,14 +280,15 @@ then
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-		cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
-		grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
+		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
 	fi
 	#Check if any new clusters are formed with the newly added sequences
 	if [ "$clustold" == "$clustnew" ]
 	then
 		printf "\n\nNo new clusters are formed, ViCTree analysis for $tid is up-to-date\n\n" 
-		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/final_id_set
+		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa 
 		#push the updated files to github	
 		git add $tid
 		git commit -m "Pipeline updated for $tid"
@@ -312,15 +313,16 @@ else
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-		cat $tid/id_to_reset $tid/id_not_reset > $tid/final_id_set
-		grep --no-group-separator -A1 -f $tid/final_id_set <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
+		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
 	fi
 fi
 
 #convert cd-hit raw output to xml format - TODO use this output for d3 collapsible tree visualisation
 #clstr2xml.pl $tid/${tid}_final_set.clstr > $tid/${tid}_final_set_cdhit_clusters.xml
 
-bash CollectMetadata.sh $tid/final_id_set ${tid}/${tid}_label.csv $genus
+bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv $genus
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
@@ -330,7 +332,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 #perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* # $tid/${tid}_set.fa $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/final_id_set
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
