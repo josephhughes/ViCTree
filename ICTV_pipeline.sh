@@ -300,7 +300,7 @@ then
 	if [ "$clustold" == "$clustnew" ]
 	then
 		printf "\n\nNo new clusters are formed, ViCTree analysis for $tid is up-to-date\n\n" 
-		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa 
+		rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_final_set
 		#push the updated files to github	
 		git add $tid
 		git commit -m "Pipeline updated for $tid"
@@ -357,7 +357,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 #perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession $tid/${tid}_final_set
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
