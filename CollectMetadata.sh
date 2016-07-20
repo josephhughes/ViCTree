@@ -18,7 +18,8 @@ do
 	then
 		genomeacc=`elink -db protein -id "$line" -target nuccore -batch |esummary| xtract -element AssemblyAcc`
 	else
-		genomeacc=`elink -db protein -id "$line" -target nuccore|efetch -format acc
+		genomeacc=`elink -db protein -id "$line" -target nuccore|efetch -format acc`
+	fi
 
 	genus=`echo $lineage|cut -f $3 -d";"`
 	echo $line,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
