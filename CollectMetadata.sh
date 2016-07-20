@@ -22,7 +22,7 @@ do
 	fi
 
 	genus=`echo $lineage|cut -f $3 -d";"`
-	echo $line,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
+	echo $line"__"$genomeacc,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
 	
 	
 }
