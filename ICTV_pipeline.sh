@@ -257,7 +257,7 @@ grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ {
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
-printf "Grouping identical sequences \n"; 
+printf "Clustering identical sequences \n"; 
 
 #Check if previous cd-hit analysis exist and if any new clusters are formed with newly added sequences
 if [ -f "$tid/${tid}_final_set.clstr" ];
@@ -282,6 +282,18 @@ then
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
 		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
+		for x in $(echo $temp)
+		do
+			if [[ "$x" == *"_"*  ]];
+			then
+				z=`elink -db protein -target nuccore -id "$x" -batch|esummary|xtract -element AssemblyAcc`;
+				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
+			else
+				y=`elink -db protein -target nuccore -id "$x" -batch |efetch -format acc`
+				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
+			fi
+		done
 		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
 	fi
 	#Check if any new clusters are formed with the newly added sequences
@@ -295,6 +307,7 @@ then
 		git push
 		exit 1
 	fi
+	
 else
 	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 	#mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
@@ -315,6 +328,18 @@ else
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
 		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
+		for x in $(echo $temp)
+		do
+			if [[ "$x" == *"_"*  ]];
+			then
+				z=`elink -db protein -target nuccore -id "$x" -batch|esummary|xtract -element AssemblyAcc`;
+				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
+			else
+				y=`elink -db protein -target nuccore -id "$x" -batch |efetch -format acc`
+				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
+			fi
+		done
 		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
 	fi
 fi
