@@ -229,7 +229,7 @@ echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
 echo $tid;
-esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|efetch -format fasta > $tid/${tid}.fa
+esearch -db taxonomy -query "$tid[Organism]"|elink -target protein -batch|efetch -format fasta > $tid/${tid}.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
 printf "Sequences downloaded successfully now running sanity check on them\n";
