@@ -76,7 +76,7 @@
 </ul>
 </p>
 <p>The following command will launch the ViCTree analysis pipeline for <I>Densovirinae</I> sub-family </p>
-<pre><code>ICTV_pipeline.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10  -i 1.0 -n Densovirinae</code></pre>
+<pre><code>ICTV_pipeline.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10  -i 0.9 -n Densovirinae</code></pre>
 
 <h3>
 <a id="Output" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Output</h3>
@@ -106,10 +106,7 @@
 <td>taxID_final_set.fa</td>
 <td align="center">The final set of sequences used for Multiple Sequence Alignment</td>
 </tr>
-<tr>
-<td>taxID_seq_info</td>
-<td align="center">GIs grouped together representing the same sequence</td>
-</tr>
+
 <tr>
 <td>taxID_tree.nhx</td>
 <td align="center">The final tree generated and rerooted by RAxML</td>
@@ -119,7 +116,7 @@
 <td align="center">The pairwise distance matrix file </td>
 </tr>
 <tr>
-<td>taxID_metadatav</td>
+<td>taxID_metadata</td>
 <td align="center">The metadata file for each sequence from taxID_final_set.fa that exists in NCBI </td>
 </tr>
 </tbody>
@@ -129,34 +126,11 @@
 <a id="visualisation" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualisation</h3>
 <p><a href="https://github.com/anilthanki/phylotree"> Phylotree </a> is a visualisation plugin for ViCTree. This is a customised phylogenetic tree visualisation plugin developed using D3.js. It reads input files from data directory of this repository and displays the phylogenetic tree. </p>
 <p> Phylotree has a scroll bar at the top that corresponds to the pairwise distances between the nodes of the tree. User can select any value between 0 and 100 based on which clusters within the tree can be highlighted. </p>
-
+<h3>
+<a href="example.html">  Densovirinae example</a>
+</h3>
 <p>The ViCTree framework is developed by : </p>
 <p>Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>), Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
-
-
-<!-- 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/josephhughes">josephhughes</a> and <a href="https://github.com/sejmodha">sejmodha</a> </p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-75119550-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
- -->
 
   </body>
 </html>
