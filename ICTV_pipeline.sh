@@ -277,10 +277,13 @@ then
 	if [ -f "$ulist" ];
 	then
 		echo "Precompiled list of accession is provided, now resetting the centroids \n"
-		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","|sort -k2 -n -u -t',' > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
-		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
+		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
+		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
+		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
+		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv > ${tid}_final_set_cdhit_clusters_reset.csv
+		
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
@@ -310,8 +313,8 @@ then
 	
 else
 	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
-	#mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
-	#grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
+	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 	#Convert cd-hit raw output to csv format
 	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 	
@@ -323,10 +326,13 @@ else
 	then
 		echo "Precompiled list of accession is provided, now resetting the centroids \n"
 		echo "Now resetting the centroids"
-		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq |cut -f1 -d "," > $tid/id_to_reset
+		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","|sort -k2 -n -u -t',' > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
-		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1 -d"," > $tid/id_not_reset
-		cat $tid/id_to_reset $tid/id_not_reset > $tid/${tid}_cdhit_rep_accession
+		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
+		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
+		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
+		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv > $tid/${tid}_final_set_cdhit_clusters_reset.csv
+		
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
