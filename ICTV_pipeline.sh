@@ -282,7 +282,7 @@ then
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
 		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
-		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv > ${tid}_final_set_cdhit_clusters_reset.csv
+		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_cdhit_clusters_info.csv
 		
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
@@ -297,7 +297,7 @@ then
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
-		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
+		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/${tid}_final_set_cdhit_clusters.csv
 	fi
 	#Check if any new clusters are formed with the newly added sequences
 	if [ "$clustold" == "$clustnew" ]
@@ -331,7 +331,7 @@ else
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
 		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
-		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv > $tid/${tid}_final_set_cdhit_clusters_reset.csv
+		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_cdhit_clusters_info.csv
 		
 		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
@@ -346,7 +346,7 @@ else
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
-		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset
+		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/${tid}_final_set_cdhit_clusters.csv
 	fi
 fi
 
@@ -363,7 +363,7 @@ sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
 #perl Fasta2Phy.pl $tid/${tid}_final_set_clustalo_aln.fa $tid/${tid}_final_set_clustalo_aln.phy
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession $tid/${tid}_final_set
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession 
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
