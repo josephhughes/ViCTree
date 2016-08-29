@@ -6,7 +6,7 @@
 #########################################################################################################
 
 touch $2
-echo "ProteinAccession,TaxonomyID,SpeciesName,GenomeAccession,Lineage,Genus,URL" > $2
+echo "ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,GenomeAccession,Lineage,Genus,URL" > $2
 while read line
 do
 {
@@ -22,7 +22,7 @@ do
 	fi
 
 	genus=`echo $lineage|cut -f $3 -d";"`
-	echo $line"__"$genomeacc,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
+	echo $line"__"$genomeacc,$genomeacc"_"$sciname,$taxid,$sciname,$genomeacc,$lineage,$genus,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
 	
 	
 }
