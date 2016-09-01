@@ -50,6 +50,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads='2';
+genus=5;
 while getopts t:s:l:c:m:p:i:n:u:h flag; do
   case $flag in
 
@@ -124,7 +125,7 @@ while getopts t:s:l:c:m:p:i:n:u:h flag; do
 		exit 1;
 	elif [[ -z $proc ]]
 	then
-		proc=$threads;
+		proc=`echo $threads`;
 		printf "Default threads $threads \n";
 	else
 		printf "No of threads\t: $proc \n"; 	
@@ -156,10 +157,10 @@ while getopts t:s:l:c:m:p:i:n:u:h flag; do
 	fi
 	if [[ $name == *dae ]]
 	then
-		genus="6"
+		$genus=6
 	elif [[ $name == *nae ]]
 	then
-		genus="5"
+		genus=5
 	else
 		printf "\n Virus family or sub-family name must end with either "dae" or "nae" \n"
 
@@ -268,7 +269,7 @@ then
 	clustold=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
 	printf "Number of clusters in the existing analysis $clust\n\n"
 	
-	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 	
@@ -328,7 +329,7 @@ then
 	fi
 	
 else
-	cdhit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
 	###########################################
