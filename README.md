@@ -1,3 +1,17 @@
 # ViCTree
+<h3>
+ViCTree: An automated framework to aid taxonomic classification of viruses
+</h3>
 
-Pipeline for automatically generating phylogenies of virus families and subfamilies
+ViCTree is a bioinformatics framework that automatically selects new candidate virus sequences from GenBank, generates multiple sequence alignments, calculates a maximum likelihood phylogeny and integrates the sequences into the updated phylogenetic trees.
+
+<h4>
+Documentation
+</h4>
+For documentation please visit ViCTree website: <a href="http://bioinformatics.cvr.ac.uk/victree_web/"> http://bioinformatics.cvr.ac.uk/victree_web/</a>
+OR
+github mirror: <a href="http://josephhughes.github.io/ViCTree/"> http://josephhughes.github.io/ViCTree/ </a>
+
+The visualisation component of the framework is available at <a href="www.bioinformatics.cvr.ac.uk/ViCTree">www.bioinformatics.cvr.ac.uk/ViCTree </a>
+
+ 
