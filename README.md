@@ -13,6 +13,6 @@ For documentation please visit ViCTree website: <a href="http://bioinformatics.c
 <p>OR</p>
 github mirror: <a href="http://josephhughes.github.io/ViCTree/"> http://josephhughes.github.io/ViCTree/ </a>
 
-An instance of the visualisation component of the framework is available at <a href="http://www.bioinformatics.cvr.ac.uk/ViCTree">www.bioinformatics.cvr.ac.uk/ViCTree </a>
+An instance of the visualisation component of the framework is available at <a href="http://www.bioinformatics.cvr.ac.uk/ViCTree">http://www.bioinformatics.cvr.ac.uk/ViCTree </a>
 
  
