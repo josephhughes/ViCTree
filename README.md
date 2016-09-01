@@ -8,12 +8,11 @@ ViCTree is a bioinformatics framework that automatically selects new candidate v
 <h4>
 Documentation
 </h4>
+
 For documentation please visit ViCTree website: <a href="http://bioinformatics.cvr.ac.uk/victree_web/"> http://bioinformatics.cvr.ac.uk/victree_web/</a>
-<p> </p>
-OR
-<p> </p>
+<p>OR</p>
 github mirror: <a href="http://josephhughes.github.io/ViCTree/"> http://josephhughes.github.io/ViCTree/ </a>
 
-An instance of the visualisation component of the framework is available at <a href="www.bioinformatics.cvr.ac.uk/ViCTree">www.bioinformatics.cvr.ac.uk/ViCTree </a>
+An instance of the visualisation component of the framework is available at <a href="http://www.bioinformatics.cvr.ac.uk/ViCTree">www.bioinformatics.cvr.ac.uk/ViCTree </a>
 
  
