@@ -1,4 +1,4 @@
-ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,URL
+ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL
 P27454__,_Aedes densonucleosis virus (STRAIN GKV 002 002),10808,Aedes densonucleosis virus (STRAIN GKV 002 002),Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Brevidensovirus;Dipteran brevidensovirus 1;Aedes aegypti densovirus,,Brevidensovirus,Aedes aegypti densovirus,http://www.ncbi.nlm.nih.gov/nuccore/
 Q90185__,_Aedes albopictus densovirus Boublik/1994,648330,Aedes albopictus densovirus Boublik/1994,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;Brevidensovirus;Dipteran brevidensovirus 1;Aedes albopictus densovirus,,Brevidensovirus,Aedes albopictus densovirus,http://www.ncbi.nlm.nih.gov/nuccore/
 AAN41665__AY148187.1,AY148187.1_Myzus persicae densovirus,210016,Myzus persicae densovirus,Viruses;ssDNA viruses;Parvoviridae;Densovirinae;unclassified Densovirinae,AY148187.1,unclassified Densovirinae,unclassified Densovirinae,http://www.ncbi.nlm.nih.gov/nuccore/AY148187.1
