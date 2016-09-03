@@ -216,7 +216,7 @@ if [ -f "$tid/${tid}.fa" ];
 then
 	printf "Previous analysis results exist, checking if any new sequences are submitted to GenBank\n\n"
 	seq=`grep -c  "^>" $tid/${tid}.fa`;
-	count=`esearch -db taxonomy -query "$tid[Organism]"|elink -target protein|xtract -element Count`;
+	count=`esearch -db protein -query "$tid[Organism]"|xtract -pattern ENTREZ_DIRECT -element Count`;
 	if [ "$seq" == "$count" ]
 	then
 		printf "No new sequences available in GenBank, ViCTree analysis for $tid is up-to-date\n\n" 
@@ -232,7 +232,8 @@ echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
 echo $tid;
-esearch -db taxonomy -query "$tid[Organism]"|elink -target protein -batch|efetch -format fasta > $tid/${tid}.fa
+esearch -db protein -query "$tid[Organism]"|efetch -format fasta > $tid/${tid}.fa
+#esearch -db taxonomy -query "$tid[Organism]"|elink -target protein -batch|efetch -format fasta > $tid/${tid}.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
 printf "Sequences downloaded successfully now running sanity check on them\n";
@@ -271,7 +272,7 @@ then
 	
 	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
-	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cluster_rep_accession
 	
 	###########################################
 	# Convert cd-hit raw output to csv format
@@ -291,20 +292,20 @@ then
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","|sort -k2 -n -u -t',' > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
-		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
+		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cluster_rep_accession
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
 		
-		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
 		do
 			if [[ "$x" == *"_"*  ]];
 			then
-				z=`elink -db protein -target nuccore -id "$x" -batch|esummary|xtract -element AssemblyAcc`;
+				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
-				y=`elink -db protein -target nuccore -id "$x" -batch |efetch -format acc`
+				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
@@ -331,7 +332,7 @@ then
 else
 	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
-	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cdhit_rep_accession
+	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cluster_rep_accession
 	###########################################
 	# Convert cd-hit raw output to csv format
 	###########################################
@@ -350,20 +351,23 @@ else
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","|sort -k2 -n -u -t',' > $tid/id_to_reset
 		grep -f "$ulist" $tid/${tid}_final_set_cdhit_clusters.csv|cut -f1-2 -d ","| uniq|diff <(cut -f2 -d ",") <(seq 0 $clustnew)|grep ">"|cut -c 3- > $tid/cluster_no_rep
 		grep -wf $tid/cluster_no_rep <(cut -f1-2,5 -d "," $tid/${tid}_final_set_cdhit_clusters.csv)|awk -F "," '{if($3!=0) print}' |cut -f1,2 -d"," > $tid/id_not_reset
-		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cdhit_rep_accession
+		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cluster_rep_accession
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
+		cut -f1 -d "," $tid/${tid}_cluster_reps > $tid/${tid}_cluster_rep_accession
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
 		
-		grep --no-group-separator -A1 -f $tid/${tid}_cdhit_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
 		do
 			if [[ "$x" == *"_"*  ]];
 			then
-				z=`elink -db protein -target nuccore -id "$x" -batch|esummary|xtract -element AssemblyAcc`;
+				
+				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
-				y=`elink -db protein -target nuccore -id "$x" -batch |efetch -format acc`
+				
+				y=`elink -db protein -id "$x" -target nuccore |efetch -format acc`
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
@@ -375,7 +379,7 @@ fi
 # Collect the metadata from NCBI for the representative sequences 
 ####################################################################
 
-bash CollectMetadata.sh $tid/${tid}_cdhit_rep_accession ${tid}/${tid}_label.csv $genus
+bash CollectMetadata.sh $tid/${tid}_cluster_rep_accession ${tid}/${tid}_label.csv $genus
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
@@ -387,7 +391,7 @@ clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --
 sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cdhit_rep_accession ${tid}_final_set_cdhit_clusters.csv
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession ${tid}_final_set_cdhit_clusters.csv
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
