@@ -6,7 +6,7 @@
 #########################################################################################################
 
 touch $2
-echo "ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,URL" > $2
+echo "ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL" > $2
 filename=$1
 IFS=$'\n'
 for line in `cat $filename`
