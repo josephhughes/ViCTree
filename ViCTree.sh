@@ -15,7 +15,7 @@
 #	  	* remove_subseq.pl						#
 #										#
 # Usage:									#
-#	./ICTV_pipeline <options>						#
+#	./ViCTree <options>						#
 #	 OPTIONS:								#
 #		-t Taxa ID (Required)						#
 #		-s Seed Set - Fasta (Required)					#
@@ -29,7 +29,7 @@
 #		-u A file with user-defined list of accessions"`;	#
 #-------------------------------------------------------------------------------#
 
-usage=`echo -e "\n Usage: ICTV_pipeline <OPTIONS> \n\n
+usage=`echo -e "\n Usage: ViCTree <OPTIONS> \n\n
 		-t Taxa ID - INT(Required) \n 
 		-s Seedset in fasta format (Required) \n
 		-l Hit Length for BLAST - INT(Required) \n
