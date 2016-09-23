@@ -3,7 +3,7 @@
 ViCTree: An automated framework to aid taxonomic classification of viruses
 </h3>
 
-ViCTree is a bioinformatics framework that automatically selects new candidate virus sequences from GenBank, generates multiple sequence alignments, calculates a maximum likelihood phylogeny and integrates the sequences into the updated phylogenetic trees.
+ViCTree is a bioinformatics framework that automatically selects new candidate virus sequences from GenBank, generates multiple sequence alignments, calculates a maximum likelihood phylogeny and, is capable of automatically building new phylogenies when new data is available on GenBank.
 
 <h4>
 Documentation
