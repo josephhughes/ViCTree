@@ -31,32 +31,32 @@
     
 
 <p><a href="http://josephhughes.github.io/ViCTree/">ViCTree Home </a></p>
+<p><a href="http://josephhughes.github.io/ViCTree/example.html">Case Study: <i>Densovirinae</i> Example </a></p>
 <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
 <p> ViCTree can be installed on any UNIX/LINUX machine. This pipeline is tested and works on Ubuntu machines with multiple cores. </p>
-<p><a href="https://help.github.com/articles/fork-a-repo/"> Fork </a>the repository to add to your GitHub account. This is required for the visualisation as the tree data is fetched from the user's GitHub account. For more information see: <i> <b>Setting up GitHub repository for visualisation </i> </b> on this page.</p>
+<p><a href="https://help.github.com/articles/fork-a-repo/"> Fork </a>the repository to add to your GitHub account. This is required for the visualisation as the tree data is fetched from the user's GitHub account. For more information see: <i><a href="tutorial.html#github">Setting up GitHub repository for visualisation</a> </i> on this page.</p>
 <p> ViCTree can be <a href="https://help.github.com/articles/cloning-a-repository/">downloaded </a>from GitHub using <a href="https://help.github.com/articles/cloning-a-repository/">clone </a> utility. </p>
 <p> A sample command to clone ViCTree is:</p>
 <pre> <code> git clone --recursive https://github.com/josephhughes/ViCTree.git </code> </pre> 
-<b><i>Note:</i></b> Please replace the URL with your ViCTree repository URL for data upload on GitHub to work at the end of the pipeline.
+<b><i>Note:</i></b> Please replace the URL with your ViCTree repository URL to enable automated GitHub data upload.
 <p></p>
 
 <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites</h3>
 <p> The following programs must be available in the $PATH environment. </p>
 <p><ul>
-<li><a href="http://bioperl.org/INSTALL.html">BioPerl </a> and<a href="ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/"> NCBI Unix EUtilities</a></li>
+<li><a href="http://bioperl.org/INSTALL.html" target="_blank">BioPerl </a> and<a href="ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/" target="_blank"> NCBI Unix EUtilities</a> (v4.80)</li>
 <p><b><i>Note:</i></b> Do not forget to run <code>bash setup.sh</code> after downloading eutils to ensure all dependencies are installed properly. This is required to run <code>xtract</code> utils. </p>
-<!-- <li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy/2.2.26/">Legacy BLAST (blastall, formatdb)</a></li> -->
-<li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/">BLAST+ (blastp, makeblastdb)</a></li>
-<li><a href="https://github.com/weizhongli/cdhit">cd-hit </a></li>
-<li><a href="http://www.clustal.org/omega/">Clustal-Omega</a></li>	
-<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a></li>
-<li><a href="https://www.gnu.org/software/bash/">GNU BASH environment</a></li>	
-<li><a href="http://sco.h-its.org/exelixis/web/software/raxml/hands_on.html">RAxML-PThreads</a></li>	
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/" target="_blank">BLAST+ </a>(blastp, makeblastdb v2.4.0)</li>
+<li><a href="https://github.com/weizhongli/cdhit" target="_blank">cd-hit </a>(v4.6)</li>
+<li><a href="http://www.clustal.org/omega/" target="_blank">Clustal-Omega</a> (v1.2.1)</li>	
+<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" target="_blank">Git</a> (v1.9.1)</li>
+<li><a href="https://www.gnu.org/software/bash/" target="_blank">GNU BASH environment</a></li>	
+<li><a href="http://sco.h-its.org/exelixis/web/software/raxml/hands_on.html" target="_blank">RAxML-PThreads</a> (v8.2.8)</li>	
 </ul>
 </p>
-
+<p><b><i>Note:</i></b> Programs versions described above are tested and work with ViCTree pipeline. Later version of these programs should work with ViCTree. Please <a href ="tutorial.html#contact">contact </a> the developers for version compatibility issues. </p>
 <p> Download ViCTree package or clone ViCTree from this page and make sure all scripts are available in $PATH. </p>
 <h3>
 <a id="running ViCTree" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running ViCTree</h3>
@@ -74,7 +74,7 @@
 		-u User-defined list of accession numbers to be set as cluster representatives
 </code> </pre>
 
-<p> To run the ViCTree pipeline you will need to identify two mandatory parameters </p>
+<p> To run the ViCTree pipeline you will need to identify two mandatory parameters. </p>
 <p><ul>
 <li>The NCBI taxonomy ID of virus family or sub-family (e.g. 40120)</li>
 <li>The seed set of sequences in a .fasta formatted file - This file should contain fasta protein sequences representing the known diversity of the virus family or sub-family of interest. 
@@ -83,13 +83,13 @@
 </p>
 <p>The following command will launch the ViCTree analysis pipeline for <I>Densovirinae</I> sub-family. </p>
 <pre><code>ViCTree.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10  -i 1.0 -n Densovirinae</code></pre>
-
-<h3> Setting up GitHub repository for visualisation
+<a name="github"></a> 
+<h3><a href="#github"> Setting up GitHub repository for visualisation </a>
 </h3>
-Update <code>user_id, repo_name </code> and <code>branch </code> parameters to your forked repository in the following lines in the file <a href="https://github.com/anilthanki/phylotree/blob/master/index.html">index.html </a> in phylotree sud-directory.
+Update <code>user_id, repo_name </code> and <code>branch </code> parameters to your forked repository in the following lines in the file <a href="https://github.com/anilthanki/ViCTreeView/blob/master/index.html">index.html </a> in ViCTreeView sub-directory.
 <pre><code>
 var user_id = "anilthanki"
-var repo_name = "phylotree"
+var repo_name = "ViCTreeView"
 var branch = "master"
 var dir = "data"
 </code>
@@ -133,12 +133,11 @@ var dir = "data"
 
 <h3>
 <a id="visualisation" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualisation</h3>
-<p><a href="https://github.com/anilthanki/phylotree"> Phylotree </a> is a visualisation plugin for ViCTree. This is a customised phylogenetic tree visualisation plugin developed using D3.js. It reads input files from data directory of this repository and displays the phylogenetic tree. </p>
-<p> Phylotree has a scroll bar at the top that corresponds to the pairwise distances between the nodes of the tree. User can select any value between 0 and 100 based on which clusters within the tree can be highlighted. </p>
-<h3>
-<a href="example.html"> Densovirinae analysis</a>
-</h3>
-<p>The ViCTree framework is developed by : </p>
+<p><a href="https://github.com/anilthanki/ViCTreeView"> ViCTreeView </a> is a visualisation plugin for ViCTree. This is a customised phylogenetic tree visualisation plugin developed using D3.js. It reads input files from data directory of this repository and displays the phylogenetic tree. </p>
+<p> ViCTreeView has a scroll bar at the top that corresponds to the pairwise distances between the nodes of the tree. User can select any value between 0 and 100 based on which clusters within the tree can be highlighted. </p>
+<a name="contact">
+<h4> <a href="#contact"> Contact </a> </h3>
+<p> The ViCTree framework is developed by : </p>
 <p>Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>), Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
 
   </body>
