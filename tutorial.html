@@ -56,7 +56,7 @@
 <li><a href="http://sco.h-its.org/exelixis/web/software/raxml/hands_on.html" target="_blank">RAxML-PThreads</a> (v8.2.8)</li>	
 </ul>
 </p>
-<p><b><i>Note:</i></b> Programs versions described above are tested and work with ViCTree pipeline. Later version of these programs should work with ViCTree. Please <a href ="tutorial.html#contact">contact </a> the developers for version compatibility issues. </p>
+<p><b><i>Note:</i></b> Programs versions described above are tested and work with ViCTree pipeline. Later version of these programs should work with ViCTree. Please <a href ="tutorial.html#contact">contact the developers  </a> for version compatibility issues. </p>
 <p> Download ViCTree package or clone ViCTree from this page and make sure all scripts are available in $PATH. </p>
 <h3>
 <a id="running ViCTree" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running ViCTree</h3>
@@ -135,10 +135,23 @@ var dir = "data"
 <a id="visualisation" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualisation</h3>
 <p><a href="https://github.com/anilthanki/ViCTreeView"> ViCTreeView </a> is a visualisation plugin for ViCTree. This is a customised phylogenetic tree visualisation plugin developed using D3.js. It reads input files from data directory of this repository and displays the phylogenetic tree. </p>
 <p> ViCTreeView has a scroll bar at the top that corresponds to the pairwise distances between the nodes of the tree. User can select any value between 0 and 100 based on which clusters within the tree can be highlighted. </p>
+
+<h3>Upate phylogenies automatically</h3> 
+<p> Once ViCTree framework is set up, it is easy to automatically update the phylogeny using scheduler utility such as <a href="https://en.wikipedia.org/wiki/Cron"> cron. </a> </p>
+<p> An example cronjob that runs the ViCTree pipeline for <i>Densovirinae</i> can be set up by editing user's crontab with <code> crontab -e </code> command.
+<pre> <code>@monthly /home/username/victreecron.sh </code> </pre>
+where victreecron.sh is a simple script that exists at the specified location and contains the actual ViCTree command required to run the analysis. </p>
+<p>For example, </p>
+<pre>
+<code>cd /path/to/victree/executables </code>
+<code>bash ViCTree.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10 -i 1.0 -n Densovirinae </code>
+</pre>
+<p><b><i>Note:</i></b> Please ensure that all <code> .bashrc</code>, <code>.bash_profile </code>and <code> bash.bashrc</code> files are sourced in the crontab as the cron's PATH environment is different from regular bash terminal PATH.
+
 <a name="contact">
-<h4> <a href="#contact"> Contact </a> </h3>
+<h3> <a href="#contact"> Contact </a> </h3>
 <p> The ViCTree framework is developed by : </p>
-<p>Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>), Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
+<p>Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>), Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>) and Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) </p>
 
   </body>
 </html>
