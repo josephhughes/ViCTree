@@ -50,6 +50,7 @@ fi
 alpha='[a-zA-Z]';
 raxml='PROTGAMMAJTT';
 threads='2';
+iden='0.9';
 genus=5;
 while getopts t:s:l:c:m:p:i:n:u:h flag; do
   case $flag in
@@ -116,36 +117,28 @@ while getopts t:s:l:c:m:p:i:n:u:h flag; do
 		printf "RAxML model set to $raxModel \n";
 	fi	
 	;;
-     p)
-	proc=`echo "$OPTARG"`;
-	
-	if [[ $proc =~ .*$alpha.* ]]
-    	then
-		printf "\n!!!! Invalid Number of Threads: Please enter a valid number of threads !!!! \n";
-		exit 1;
-	elif [[ -z $proc ]]
-	then
-		proc=`echo $threads`;
-		printf "Default threads $threads \n";
-	else
-		printf "No of threads\t: $proc \n"; 	
-	fi
-	;;
-     i)
-	identity=`echo "$OPTARG"`;
-	
-	if [[ $identity =~ .*$alpha.* ]]
-    	then
-		printf "\n!!!! Invalid sequence identity value: Please enter a valid number of threads !!!! \n";
-		exit 1;
-	elif [[ -z $identity ]]
-	then
-		$identity="1.0";
-		printf "Default Identity set to 100% \n";
-	else
-		printf "Identity \t: $identity \n"; 	
-    	fi
-	;;
+    p)
+    proc=`echo "$OPTARG"`;
+
+    if [[ $proc =~ .*$alpha.* ]]
+    then
+        printf "\n!!!! Invalid Number of Threads: Please enter a valid number of threads !!!! \n";
+        exit 1;
+    else
+        printf "No of threads\t: $proc \n";
+    fi
+    ;;
+    i)
+    identity=`echo "$OPTARG"`;
+
+    if [[ $identity =~ .*$alpha.* ]]
+    then
+        printf "\n!!!! Invalid sequence identity value: Please enter a valid number of threads !!!! \n";
+        exit 1;
+    else
+        printf "Identity \t: $identity \n";
+    fi
+    ;;
       n)
 	name=`echo $OPTARG`;
 	if [[ -z $name ]]
@@ -212,6 +205,17 @@ then
     exit 1
 fi
 
+if [ -z $identity ]
+then
+    identity=$iden
+    printf  "\nDefault identity \t: $identity \n" >&2
+fi
+
+if [ -z $proc ]
+then
+     proc=`echo $threads`;
+     printf "Default threads \t: $threads \n";
+fi
 if [ -f "$tid/${tid}.fa" ];
 then
 	printf "Previous analysis results exist, checking if any new sequences are submitted to GenBank\n\n"
