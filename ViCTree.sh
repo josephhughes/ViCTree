@@ -412,9 +412,9 @@ raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n
 mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
 cd ..
 
-cp ${tid}/${tid}.nhx phylotree/data/${name}.nhx
-cp ${tid}/${tid}_label.csv phylotree/data/${name}_label.csv
-cp ${tid}/${tid}.csv phylotree/data/${name}.csv
+cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
+cp ${tid}/${tid}_label.csv ViCTreeView/data/${name}_label.csv
+cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
 
 ####################################
 #Upload the data to git repository
@@ -422,7 +422,7 @@ cp ${tid}/${tid}.csv phylotree/data/${name}.csv
 git add $tid
 git commit -m "Pipeline updated for $tid"
 git push
-cd phylotree
+cd ViCTreeView
 #git pull
 git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
 git commit -m "Data files updated for $name"
