@@ -150,7 +150,7 @@ while getopts t:s:l:c:m:p:i:n:u:h flag; do
 	fi
 	if [[ $name == *dae ]]
 	then
-		$genus=6
+		genus=6
 	elif [[ $name == *nae ]]
 	then
 		genus=5
@@ -253,7 +253,7 @@ makeblastdb -in $tid/${tid}_checked.fa -dbtype 'prot'
 echo "-----------------Running Step 4 of Pipeline --------------------";
 printf "Running BLASTP \n";
 
-blastp -query $seeds -db $tid/${tid}_checked.fa -out $tid/${tid}_blastp.txt -evalue 1 -num_alignments 1000000 -num_descriptions 1000000
+blastp -query $seeds -db $tid/${tid}_checked.fa -out $tid/${tid}_blastp.txt -evalue 1 -num_alignments 1000000 -num_descriptions 1000000 -num_threads $proc
 
 echo "-----------------Running Step 5 of Pipeline --------------------";
 printf "Compiling Sequences \n";
@@ -274,7 +274,7 @@ then
 	clustold=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
 	printf "Number of clusters in the existing analysis $clust\n\n"
 	
-	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1 -T $proc
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cluster_rep_accession
 	
@@ -334,7 +334,7 @@ then
 	fi
 	
 else
-	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1
+	cd-hit -i $tid/${tid}_set_seeds_combined.fa -o $tid/${tid}_final_set -c $identity -t 1 -T $proc
 	mv $tid/${tid}_final_set $tid/${tid}_final_set.fa
 	grep "^>" $tid/${tid}_final_set.fa |sed 's/>//' > $tid/${tid}_cluster_rep_accession
 	###########################################
