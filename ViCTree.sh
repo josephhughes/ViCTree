@@ -241,7 +241,10 @@ esearch -db protein -query "$tid[Organism]"|efetch -format fasta > $tid/${tid}.f
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
 printf "Sequences downloaded successfully now running sanity check on them\n";
-perl SanityCheck.pl $tid/$tid.fa $tid/${tid}_checked.fa;
+#perl SanityCheck.pl $tid/$tid.fa $tid/${tid}_checked.fa;
+
+#Remove empty sequences if there are any in the file - bash replacement for SanityCheck.pl
+awk 'BEGIN {RS = ">" ; FS = "\n" ; ORS = ""} $2 {print ">"$0}' $tid/$tid.fa > $tid/${tid}_checked.fa
 # re-format sequences to suit newer version of NCBI fasta headers
 sed -i 's/gi|[0-9]*|[a-z]*|//g;s/|//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
 
@@ -253,12 +256,19 @@ makeblastdb -in $tid/${tid}_checked.fa -dbtype 'prot'
 echo "-----------------Running Step 4 of Pipeline --------------------";
 printf "Running BLASTP \n";
 
-blastp -query $seeds -db $tid/${tid}_checked.fa -out $tid/${tid}_blastp.txt -evalue 1 -num_alignments 1000000 -num_descriptions 1000000 -num_threads $proc
+blastp -query $seeds -db $tid/${tid}_checked.fa -out $tid/${tid}_blastp.txt -evalue 1 -max_target_seqs 1000000  -num_threads $proc -outfmt '6 qseqid stitle sacc length qcovs qlen evalue bitscore'
+
+
 
 echo "-----------------Running Step 5 of Pipeline --------------------";
 printf "Compiling Sequences \n";
 
-perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
+#perl BlastParseToList.pl -inblast $tid/${tid}_blastp.txt -out $tid/${tid}_filtered.txt -hit_length $len -cover $cover;
+
+#remove perl dependencies by removing BlastParseToList.pl with bash
+
+awk -F"\t" -v len=$len -v cov=$cover '{if($4 >= len && $5 >= cov) print $2}' $tid/${tid}_blastp.txt|sort -u > $tid/${tid}_filtered.txt
+
 grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 
