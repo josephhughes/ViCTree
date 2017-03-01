@@ -1,5 +1,5 @@
 >Cluster 0
-0	849aa, >P27454... *
+0	849aa, >spP27454... *
 1	849aa, >P27454... at 100.00%
 >Cluster 1
 0	849aa, >YP_002854229... *
@@ -8,7 +8,7 @@
 0	849aa, >YP_004222723... *
 1	849aa, >ADV74757... at 100.00%
 >Cluster 3
-0	805aa, >Q90185... *
+0	805aa, >spQ90185... *
 1	805aa, >NP_694827... at 100.00%
 2	805aa, >CAA52899... at 100.00%
 3	805aa, >Q90185... at 100.00%
@@ -230,72 +230,76 @@
 >Cluster 76
 0	576aa, >AGO32190... *
 >Cluster 77
+0	574aa, >AQN78650... *
+>Cluster 78
 0	345aa, >ANG55951... at 100.00%
 1	568aa, >ANG55949... *
->Cluster 78
+>Cluster 79
 0	568aa, >NP_694843... *
 1	568aa, >AAK54462... at 100.00%
 2	568aa, >NP_694843... at 100.00%
->Cluster 79
-0	565aa, >AIQ82699... *
 >Cluster 80
+0	567aa, >AQN78648... *
+>Cluster 81
+0	565aa, >AIQ82699... *
+>Cluster 82
 0	554aa, >YP_007003823... *
 1	554aa, >AFV91527... at 100.00%
 2	554aa, >YP_007003823... at 100.00%
->Cluster 81
+>Cluster 83
 0	552aa, >YP_008766862... *
 1	552aa, >AGZ03694... at 100.00%
->Cluster 82
+>Cluster 84
 0	548aa, >YP_002887625... *
 1	548aa, >ACQ76570... at 100.00%
 2	548aa, >YP_002887625... at 100.00%
->Cluster 83
-0	545aa, >Q90054... *
+>Cluster 85
+0	545aa, >spQ90054... *
 1	545aa, >AGO32180... at 100.00%
 2	545aa, >NP_694824... at 100.00%
 3	545aa, >AAB23699... at 100.00%
->Cluster 84
-0	545aa, >O71153... *
+>Cluster 86
+0	545aa, >spO71153... *
 1	545aa, >NP_046813... at 100.00%
 2	545aa, >AAC17999... at 100.00%
->Cluster 85
+>Cluster 87
 0	545aa, >NP_958099... *
 1	545aa, >AAR30037... at 100.00%
->Cluster 86
+>Cluster 88
 0	545aa, >AFK91980... *
 1	545aa, >AFK91980... at 100.00%
->Cluster 87
+>Cluster 89
 0	544aa, >NP_899650... *
->Cluster 88
+>Cluster 90
 0	538aa, >NP_051020... *
 1	538aa, >AAF04297... at 100.00%
 2	538aa, >BAA82961... at 100.00%
 3	538aa, >NP_051020... at 100.00%
->Cluster 89
+>Cluster 91
 0	533aa, >YP_009310053... *
 1	533aa, >AOW41921... at 100.00%
->Cluster 90
+>Cluster 92
 0	533aa, >AFC75858... *
 1	533aa, >AFC75858... at 100.00%
->Cluster 91
+>Cluster 93
 0	530aa, >NP_874381... *
 1	530aa, >AAO38887... at 100.00%
 2	530aa, >NP_874381... at 100.00%
->Cluster 92
+>Cluster 94
 0	525aa, >AIY34702... *
 1	525aa, >AIY34700... at 100.00%
->Cluster 93
+>Cluster 95
 0	495aa, >YP_008658568... *
 1	495aa, >AGW50716... at 100.00%
 2	495aa, >YP_008658568... at 100.00%
->Cluster 94
-0	467aa, >AJD76763... *
->Cluster 95
-0	455aa, >P05840... *
-1	430aa, >AAA67696... at 100.00%
 >Cluster 96
-0	432aa, >AND61496... *
+0	467aa, >AJD76763... *
 >Cluster 97
-0	429aa, >AFA36168... *
+0	455aa, >spP05840... *
+1	430aa, >AAA67696... at 100.00%
 >Cluster 98
+0	432aa, >AND61496... *
+>Cluster 99
+0	429aa, >AFA36168... *
+>Cluster 100
 0	344aa, >AFH02761... *
