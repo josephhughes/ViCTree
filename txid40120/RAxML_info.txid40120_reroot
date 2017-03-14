@@ -4,7 +4,7 @@ WARNING: RAxML is not checking sequences for duplicate seqs and sites with missi
 
 
 
-This is RAxML version 8.2.9 released by Alexandros Stamatakis on July 20 2016.
+This is RAxML version 8.2.8 released by Alexandros Stamatakis on March 23 2016.
 
 With greatly appreciated code contributions by:
 Andre Aberer      (HITS)
@@ -31,12 +31,8 @@ raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.txid40120 -m PROTGAMMAJ
 Your input tree contains branch labels, these will also be printed in the output tree ...
 
 RAxML-rooted tree using subtree length-balance printed to file:
-/Users/sejalmodha/Desktop/ViCTree/txid40120/RAxML_rootedTree.txid40120_reroot
+/home1/modh01s/Projects/ICTV-phylo-master/pipeline/ViCTree/txid40120/RAxML_rootedTree.txid40120_reroot
 
 
-<<<<<<< HEAD
-Time for tree rooting: 0.002115
-=======
-Time for tree rooting: 0.002762
->>>>>>> d2936e354e017cb7d13f410a24c56810804c1e83
+Time for tree rooting: 0.002474
 
