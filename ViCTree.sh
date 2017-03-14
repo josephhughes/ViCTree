@@ -246,7 +246,9 @@ printf "Sequences downloaded successfully now running sanity check on them\n";
 #Remove empty sequences if there are any in the file - bash replacement for SanityCheck.pl
 awk 'BEGIN {RS = ">" ; FS = "\n" ; ORS = ""} $2 {print ">"$0}' $tid/$tid.fa > $tid/${tid}_checked.fa
 # re-format sequences to suit newer version of NCBI fasta headers
-sed -i 's/gi|[0-9]*|[a-z]*|//g;s/|//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
+#sed -i 's/gi|[0-9]*|[a-z]*|//g;s/|//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
+# re-format the sequence headers for PIR, PDB and SwissProt DB sequences
+sed -i 's/[a-z]*|//g;s/ .*//;s/\.[1-9].*//g' $tid/${tid}_checked.fa
 
 echo "-----------------Running Step 3 of Pipeline --------------------";	
 printf "Creating BLAST databases\n";
