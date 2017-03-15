@@ -1,9 +1,9 @@
 #/bin/bash
 
-#########################################################################################################
-## This script takes a file with list of protein accessions and collects metadata			#
-## Results are saved in $2 - Protein Acc,Taxonomy ID,Species Name,Genome Accession,Lineage,Genus,URL	#
-#########################################################################################################
+#########################################################################################################################################################
+## This script takes a file with list of protein accessions and collects metadata									#
+## Results are saved in $2 - ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL	#
+#########################################################################################################################################################
 
 touch $2
 echo "ProteinAccession_GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL" > $2
