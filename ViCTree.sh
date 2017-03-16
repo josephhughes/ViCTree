@@ -461,12 +461,12 @@ cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
 ####################################
 #Upload the data to git repository
 ####################################
-# git add $tid
-# git commit -m "Pipeline updated for $tid"
-# git push
-# cd ViCTreeView
-# #git pull
-# git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
-# git commit -m "Data files updated for $name"
-# git push
+ git add $tid
+ git commit -m "Pipeline updated for $tid"
+ git push
+ cd ViCTreeView
+ #git pull
+ git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
+ git commit -m "Data files updated for $name"
+ git push
 
