@@ -236,7 +236,7 @@ echo "-----------------Running Step 1 of Pipeline --------------------";
 #perl DownloadProteinForTaxid.pl $tid/$tid.fa $tid;
 echo  "Downloading sequences from NCBI"
 echo $tid;
-esearch -db protein -query "$tid[Organism]"|efetch -format fasta > $tid/${tid}.fa
+esearch -db protein -query "$tid[Organism]" |efetch -format fasta > $tid/${tid}.fa
 #esearch -db taxonomy -query "$tid[Organism]"|elink -target protein -batch|efetch -format fasta > $tid/${tid}.fa
 echo "-----------------Running Step 2 of Pipeline --------------------";
 
@@ -326,6 +326,20 @@ then
 			fi
 		done
 		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/${tid}_final_set_cdhit_clusters.csv
+	##### if a user-defined set is not provided then just re-format the headers in the final set #########
+	else
+		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
+		for x in $(echo $temp)
+		do
+			if [[ "$x" == *"_"*  ]];
+			then
+				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
+			else
+				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
+				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
+			fi
+		done
 	fi
 	
 	#########################################################################
@@ -388,6 +402,22 @@ else
 			fi
 		done
 		rm $tid/id_not_reset $tid/cluster_no_rep $tid/id_to_reset $tid/${tid}_final_set_cdhit_clusters.csv
+		
+	
+		##### if a user-defined set is not provided then just re-format the headers in the final set #########
+	else
+		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
+		for x in $(echo $temp)
+		do
+			if [[ "$x" == *"_"*  ]];
+			then
+				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
+			else
+				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
+				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
+			fi
+		done
 	fi
 fi
 
@@ -431,12 +461,12 @@ cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
 ####################################
 #Upload the data to git repository
 ####################################
-git add $tid
-git commit -m "Pipeline updated for $tid"
-git push
-cd ViCTreeView
-#git pull
-git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
-git commit -m "Data files updated for $name"
-git push
+# git add $tid
+# git commit -m "Pipeline updated for $tid"
+# git push
+# cd ViCTreeView
+# #git pull
+# git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
+# git commit -m "Data files updated for $name"
+# git push
 
