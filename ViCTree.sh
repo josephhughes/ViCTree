@@ -296,6 +296,9 @@ then
 	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 	awk -F"," '{if($5!=0) print $1","$2}' $tid/${tid}_final_set_cdhit_clusters.csv|tail -n +2 >$tid/${tid}_cluster_reps
 	awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
+
+	#Collate all members of a cluster together to form a URL for NCBI
+	awk -F',' 'NF>1{a[$4] = a[$4]","$1};END{for(i in a){print  i""a[i]}}' $tid/${tid}_clusters_info.csv |cut -f2- -d ","|awk -F"," '{print $1",""https://www.ncbi.nlm.nih.gov/protein/"$0}' > $tid/${tid}_clusters_members_temp
 		
 	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
 	
@@ -311,6 +314,9 @@ then
 		cat <(cut -f1 -d "," $tid/id_to_reset) <(cut -f1 -d "," $tid/id_not_reset) > $tid/${tid}_cluster_rep_accession
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
+		
+		#Collate all members of a cluster together to form a URL for NCBI
+		awk -F',' 'NF>1{a[$4] = a[$4]","$1};END{for(i in a){print  i""a[i]}}' $tid/${tid}_clusters_info.csv |cut -f2- -d ","|awk -F"," '{print $1",""https://www.ncbi.nlm.nih.gov/protein/"$0}'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
 		
 		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
@@ -369,6 +375,10 @@ else
 	clstr2txt.pl $tid/${tid}_final_set.clstr|tr "\t" ","|awk 'BEGIN{ FS = ","; OFS = "," }; {if($5==1){ $5=$1} print}' > $tid/${tid}_final_set_cdhit_clusters.csv
 	awk -F"," '{if($5!=0) print $1","$2}' $tid/${tid}_final_set_cdhit_clusters.csv|tail -n +2 >$tid/${tid}_cluster_reps
 	awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
+
+	#Collate all members of a cluster together to form a URL for NCBI
+	awk -F',' 'NF>1{a[$4] = a[$4]","$1};END{for(i in a){print  i""a[i]}}' $tid/${tid}_clusters_info.csv |cut -f2- -d ","|awk -F"," '{print $1",""https://www.ncbi.nlm.nih.gov/protein/"$0}'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
+	
 	
 	####################################################
 	# Reset the cd-hit cluster ID to userdefined list
@@ -385,6 +395,9 @@ else
 		cat $tid/id_to_reset $tid/id_not_reset |sort -k2 -n -t ','> $tid/${tid}_cluster_reps
 		cut -f1 -d "," $tid/${tid}_cluster_reps > $tid/${tid}_cluster_rep_accession
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
+		
+		#Collate all members of a cluster together to form a URL for NCBI
+		awk -F',' 'NF>1{a[$4] = a[$4]","$1};END{for(i in a){print  i""a[i]}}' $tid/${tid}_clusters_info.csv |cut -f2- -d "," |awk -F"," '{print $1",""https://www.ncbi.nlm.nih.gov/protein/"$0}'|sed '/AccessionNumber/d'  > $tid/${tid}_clusters_members_temp
 		
 		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
@@ -427,6 +440,11 @@ fi
 
 bash CollectMetadata.sh $tid/${tid}_cluster_rep_accession ${tid}/${tid}_label.csv $genus
 
+#Join current label table with  and replace first 10 comma (,) with a tab in order to preserve the long URLs
+awk -F"," 'NR==FNR{a[$10]=$0;next}{$1=a[$1];print $0}' OFS=","  ${tid}/${tid}_label.csv $tid/${tid}_clusters_members_temp |perl -pe '$i = 0; s/,/$i++ < 11 ? "\t" : $&/ge' > ${tid}/${tid}_label.tsv
+
+awk -i inplace 'BEGINFILE{print "ProteinAccession__GenomeAcc\tGenomeAcc_ScientificName\tTaxonomyID\tScientificName\tLineage\tGenomeAccession\tGenus\tSpecies\tGenomeAcc_Lineage\tProteinAccession\tRepURL\tClusterURL"}{print}' ${tid}/${tid}_label.tsv
+
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
 clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --outfmt="fasta" --force --full --distmat-out=$tid/${tid}_clustalo_dist_mat
@@ -437,7 +455,7 @@ clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --
 sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession ${tid}_final_set_cdhit_clusters.csv
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession  $tid/${tid}_clusters_members_temp
 
 echo "-----------------Running Step 8 of Pipeline --------------------";
 printf "Running Phylogenetic Analysis using RAXML \n";
