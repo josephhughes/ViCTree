@@ -455,36 +455,36 @@ clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --
 sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
 header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
 sed -i "1ispecies,"$header"" $tid/${tid}.csv 
-# rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession  $tid/${tid}_clusters_members_temp
-# 
-# echo "-----------------Running Step 8 of Pipeline --------------------";
-# printf "Running Phylogenetic Analysis using RAXML \n";
-# printf "RAxML model is set to $raxml \n\n";
-# cd $tid;
-# rm -f RAxML*
-# printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
-# raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc
-# 
-# #####################
-# # Reroot the tree
-# #####################
-# raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
-# mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
-# cd ..
-# 
-# cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
-# cp ${tid}/${tid}_label.csv ViCTreeView/data/${name}_label.csv
-# cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
-# 
-# ####################################
-# #Upload the data to git repository
-# ####################################
-#  git add $tid
-#  git commit -m "Pipeline updated for $tid"
-#  git push
-#  cd ViCTreeView
-#  #git pull
-#  git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
-#  git commit -m "Data files updated for $name"
-#  git push
+rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession  $tid/${tid}_clusters_members_temp
+
+echo "-----------------Running Step 8 of Pipeline --------------------";
+printf "Running Phylogenetic Analysis using RAXML \n";
+printf "RAxML model is set to $raxml \n\n";
+cd $tid;
+rm -f RAxML*
+printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
+raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc
+
+#####################
+# Reroot the tree
+#####################
+raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
+mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
+cd ..
+
+cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
+cp ${tid}/${tid}_label.csv ViCTreeView/data/${name}_label.csv
+cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
+
+####################################
+#Upload the data to git repository
+####################################
+ git add $tid
+ git commit -m "Pipeline updated for $tid"
+ git push
+ cd ViCTreeView
+ #git pull
+ git add data/${name}.nhx data/${name}.csv data/${name}_label.csv
+ git commit -m "Data files updated for $name"
+ git push
 
