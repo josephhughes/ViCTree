@@ -443,7 +443,7 @@ bash CollectMetadata.sh $tid/${tid}_cluster_rep_accession ${tid}/${tid}_label.cs
 #Join current label table with  and replace first 10 comma (,) with a tab in order to preserve the long URLs
 awk -F"," 'NR==FNR{a[$10]=$0;next}{$1=a[$1];print $0}' OFS=","  ${tid}/${tid}_label.csv $tid/${tid}_clusters_members_temp |perl -pe '$i = 0; s/,/$i++ < 11 ? "\t" : $&/ge' > ${tid}/${tid}_label.tsv
 
-awk -i inplace 'BEGINFILE{print "ProteinAccession__GenomeAcc\tGenomeAcc_ScientificName\tTaxonomyID\tScientificName\tLineage\tGenomeAccession\tGenus\tSpecies\tGenomeAcc_Lineage\tProteinAccession\tRepURL\tClusterURL"}{print}' ${tid}/${tid}_label.tsv
+sed -i '1 iProteinAccession__GenomeAcc\tGenomeAcc_ScientificName\tTaxonomyID\tScientificName\tLineage\tGenomeAccession\tGenus\tSpecies\tGenomeAcc_Lineage\tProteinAccession\tRepURL\tClusterURL' ${tid}/${tid}_label.tsv
 
 echo "-----------------Running Step 7 of Pipeline --------------------";
 printf "Running Multiple Sequence Alignments Using CLUSTALO \n"; 
