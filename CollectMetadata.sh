@@ -5,7 +5,7 @@
 ## Results are saved in $2 - ProteinAccession__GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL	#
 #########################################################################################################################################################
 
-touch $2
+#touch $2
 #echo "ProteinAccession__GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,GenomeAcc_Lineage,ProteinAccession,URL" > $2
 filename=$1
 IFS=$'\n'
