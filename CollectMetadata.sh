@@ -27,7 +27,7 @@ do
 	species=`echo $taxonomy|awk -F ";" '{print $NF}'`
 	sciname=`echo $taxonomy|cut -f2 -d ","`
 	lineage=`echo $taxonomy|cut -f3 -d ","`
-	echo $line"__"$genomeacc,$genomeacc"_"$sciname,$taxonomy,$genomeacc,$genus,$species,$genomeacc"_"$lineage,$line,"http://www.ncbi.nlm.nih.gov/nuccore/"$genomeacc >> $2
+	echo $line"__"$genomeacc,$genomeacc"_"$sciname,$taxonomy,$genomeacc,$genus,$species,$genomeacc"_"$lineage,$line,$genomeacc >> $2
 	
 	
 }
