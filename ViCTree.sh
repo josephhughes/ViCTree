@@ -477,7 +477,7 @@ cd ..
 
 cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
 cp ${tid}/${tid}_label.csv ViCTreeView/data/${name}_label.csv
-cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
+cp ${tid}/${tid}.tsv ViCTreeView/data/${name}.csv
 
 ####################################
 #Upload the data to git repository
