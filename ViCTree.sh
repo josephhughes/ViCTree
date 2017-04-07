@@ -298,8 +298,8 @@ then
 	awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|awk '!seen[$1]++' |sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
 	
 	#Collate all members of a cluster together to form a URL for NCBI
-	awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv|awk -F"," '{if($1==$2)print $1;else print $0}'| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
-		
+	awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
+	
 	clustnew=`grep -c  "^>" $tid/${tid}_final_set.clstr`;
 	
 	####################################################
@@ -317,8 +317,8 @@ then
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|awk '!seen[$1]++' |sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\' > $tid/${tid}_clusters_info.csv		
 		
 		#Collate all members of a cluster together to form a URL for NCBI
-		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv|awk -F"," '{if($1==$2)print $1;else print $0}'| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
-		
+		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
+
 		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
@@ -379,8 +379,8 @@ else
 	awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|awk '!seen[$1]++' |sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\' > $tid/${tid}_clusters_info.csv
 
 	#Collate all members of a cluster together to form a URL for NCBI
-	awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv|awk -F"," '{if($1==$2)print $1;else print $0}'| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
-	
+	awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
+
 	
 	####################################################
 	# Reset the cd-hit cluster ID to userdefined list
@@ -400,8 +400,8 @@ else
 		awk -F"," 'FNR==NR{a[$2]=$0;next}{if(b=a[$2]) {print $0","a[$2]}}' $tid/${tid}_cluster_reps $tid/${tid}_final_set_cdhit_clusters.csv |cut -f1,3,4,8 -d ","|awk '!seen[$1]++'|sed -e '1iAccessionNumber,ClusterSize,Length,ClusterRepresentative\'> $tid/${tid}_clusters_info.csv
 		
 		#Collate all members of a cluster together to form a URL for NCBI
-		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv|awk -F"," '{if($1==$2)print $1;else print $0}'| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d'> $tid/${tid}_clusters_members_temp
-		
+		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
+
 		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
@@ -455,39 +455,39 @@ clustalo -i $tid/${tid}_final_set.fa -o $tid/${tid}_final_set_clustalo_aln.fa --
 ##############################################
 # Format matrix file for visualisation
 ##############################################
-sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
-header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
-sed -i "1ispecies,"$header"" $tid/${tid}.csv 
-rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession  $tid/${tid}_clusters_members_temp
-
-echo "-----------------Running Step 8 of Pipeline --------------------";
-printf "Running Phylogenetic Analysis using RAXML \n";
-printf "RAxML model is set to $raxml \n\n";
-cd $tid;
-rm -f RAxML*
-printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
-raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc
-
-#####################
-# Reroot the tree
-#####################
-raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
-mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
-cd ..
-
-cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
-cp ${tid}/${tid}_label.tsv ViCTreeView/data/${name}_label.tsv
-cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
-
-####################################
-#Upload the data to git repository
-####################################
-git add $tid
-git commit -m "Pipeline updated for $tid"
-git push
-cd ViCTreeView
-#git pull
-git add data/${name}.nhx data/${name}.csv data/${name}_label.tsv
-git commit -m "Data files updated for $name"
-git push
-
+# sed -e '1d' $tid/${tid}_clustalo_dist_mat| tr -s " "| sed 's/ /,/g' > $tid/${tid}.csv
+# header=`cut -f1 -d ',' $tid/${tid}.csv| tr '\n' ','|sed 's/,$//g'`
+# sed -i "1ispecies,"$header"" $tid/${tid}.csv 
+# rm $tid/${tid}_set_seeds_combined.fa $tid/${tid}_blastp.txt $tid/${tid}_checked* $tid/${tid}_set.fa $tid/${tid}_cluster_rep_accession  $tid/${tid}_clusters_members_temp
+# 
+# echo "-----------------Running Step 8 of Pipeline --------------------";
+# printf "Running Phylogenetic Analysis using RAXML \n";
+# printf "RAxML model is set to $raxml \n\n";
+# cd $tid;
+# rm -f RAxML*
+# printf "raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc \n";
+# raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_clustalo_aln.fa -n $tid -T $proc
+# 
+# #####################
+# # Reroot the tree
+# #####################
+# raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
+# mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
+# cd ..
+# 
+# cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
+# cp ${tid}/${tid}_label.tsv ViCTreeView/data/${name}_label.tsv
+# cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
+# 
+# ####################################
+# #Upload the data to git repository
+# ####################################
+# git add $tid
+# git commit -m "Pipeline updated for $tid"
+# git push
+# cd ViCTreeView
+# #git pull
+# git add data/${name}.nhx data/${name}.csv data/${name}_label.tsv
+# git commit -m "Data files updated for $name"
+# git push
+# 
