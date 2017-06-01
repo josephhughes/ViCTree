@@ -326,9 +326,17 @@ then
 			if [[ "$x" == *"_"*  ]];
 			then
 				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				if [ -z "$z" ]
+				then
+				    z="undef"
+				fi
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
 				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
+				if [ -z "$y" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
@@ -341,9 +349,17 @@ then
 			if [[ "$x" == *"_"*  ]];
 			then
 				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				if [ -z "$z" ]
+                                then
+                                    z="undef"
+                                fi
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
 				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
+				if [ -z "$y" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
@@ -410,10 +426,18 @@ else
 			then
 				
 				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				if [ -z "$z" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
 				
 				y=`elink -db protein -id "$x" -target nuccore |efetch -format acc`
+				if [ -z "$y" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
@@ -428,9 +452,17 @@ else
 			if [[ "$x" == *"_"*  ]];
 			then
 				z=`elink -db protein -id "$x" -target nuccore -batch|efetch -format docsum|xtract -pattern DocumentSummary -element AssemblyAcc`;
+				if [ -z "$z" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$z/g" $tid/${tid}_final_set.fa
 			else
 				y=`elink -db protein -id "$x" -target nuccore -batch |efetch -format acc`
+				if [ -z "$y" ]
+                                then
+                                    y="undef"
+                                fi
 				sed -i "s/$x/$x"__"$y/g" $tid/${tid}_final_set.fa
 			fi
 		done
