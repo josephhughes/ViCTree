@@ -5,7 +5,11 @@
 ## Results are saved in $2 - ProteinAccession__GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,URL	#
 #########################################################################################################################################################
 
-#touch $2
+if [ -f $2 ]
+then
+    rm -f $2
+    touch $2
+fi
 #echo "ProteinAccession__GenomeAcc,GenomeAcc_ScientificName,TaxonomyID,ScientificName,Lineage,GenomeAccession,Genus,Species,GenomeAcc_Lineage,ProteinAccession,URL" > $2
 filename=$1
 IFS=$'\n'
@@ -27,6 +31,30 @@ do
 	species=`echo $taxonomy|awk -F ";" '{print $NF}'`
 	sciname=`echo $taxonomy|cut -f2 -d ","`
 	lineage=`echo $taxonomy|cut -f3 -d ","`
+	if [ -z "$genus" ]
+	then
+	    genus="undef"
+	fi
+	if [ -z "$genomeacc" ]
+	then
+	    genomeacc="undef"
+	fi
+	if [ -z "$lineage" ]
+	then
+	    lineage="undef"
+	fi
+	if [ -z "$species" ]
+	then
+	    species="undef"
+	fi
+	if [ -z "$sciname" ]
+	then
+	    sciname="undef"
+	fi
+	if [ -z "$taxonomy" ]
+	then
+	    taxonomy="undef"
+	fi   	
 	echo $line"__"$genomeacc,$genomeacc"_"$sciname,$taxonomy,$genomeacc,$genus,$species,$genomeacc"_"$lineage,$line,$genomeacc >> $2
 	
 	
