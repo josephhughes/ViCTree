@@ -148,6 +148,25 @@ where victreecron.sh is a simple script that exists at the specified location an
 </pre>
 <p><b><i>Note:</i></b> Please ensure that all <code> .bashrc</code>, <code>.bash_profile </code>and <code> bash.bashrc</code> files are sourced in the crontab as the cron's PATH environment is different from regular bash terminal PATH.
 
+<h3>
+<a id="versioning" class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visualising different version of phylogeny</h3>
+<p> It is possible to visualise different versions of a phylogeny in ViCTreeView to study incorporation of new sequences over time.  </p>
+<p> To achieve this, each version of the phylogeny should be tagged with a unique identifier by changing value of <code> $name</code> in following lines of code in the <a href="https://github.com/josephhughes/ViCTree/blob/master/ViCTree.sh"> ViCTree.sh. </a></p>
+<pre>
+<code>cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx </code>
+<code>cp ${tid}/${tid}_label.tsv ViCTreeView/data/${name}_label.tsv </code>
+<code>cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv </code>
+<code>git add data/${name}.nhx data/${name}.csv data/${name}_label.tsv </code>
+<code>git commit -m "Data files updated for $name" </code>
+</pre>
+<p> These changes would add a new version of the files with a unique identifier in the ViCTreeView's data folder. </p>
+<p> A ViCTreeView instance that demonstrates visualisation of multiple phylogenies of <i>Densovirinae</i> is set up on: <a href="http://bioinformatics.cvr.ac.uk/victree-densovirinae/#"> http://bioinformatics.cvr.ac.uk/victree-densovirinae </a> Three separate versions of <i>Densovirinae</i> phylogeny can be browsed using the pull down menu labelled Examples. </p>
+<p><ul>
+<li> Densovirinae042017 - April 2017 </li>
+<li> Densovirinae062017 - June 2017 </li>
+<li> Densovirinae122016 - December 2016 </li>
+</ul>
+</p>
 <a name="contact">
 <h3> <a href="#contact"> Contact </a> </h3>
 <p> The ViCTree framework is developed by : </p>
