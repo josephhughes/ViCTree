@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>ViCTree</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>ViCTree</h1>
+        <p>A Virus Taxonomy Classification Framework</p>
+
+        <p class="view"><a href="https://github.com/josephhughes/ViCTree">View the Project on GitHub <small>josephhughes/ViCTree</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/josephhughes/ViCTree/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/josephhughes/ViCTree/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/josephhughes/ViCTree">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+    
+
+<p><a href="http://bioinformatics.cvr.ac.uk/victree_web/">ViCTree Home </a></p>
+<p><a href="http://bioinformatics.cvr.ac.uk/victree_web/tutorial.html">Tutorial </p>
+<p><a href="http://bioinformatics.cvr.ac.uk/victree_web/example.html">Case Study: <i>Densovirinae</i> Example </a></p>
+
+<h3>How can I set up ViCTree to update phylogenies automatically?</h3>
+<p> Once ViCTree framework is set up, it is easy to automatically update the phylogeny using scheduler utility such as <a href="https://en.wikipedia.org/wiki/Cron"> cron. </a> </p>
+<p> An example cronjob that runs the ViCTree pipeline for <i>Densovirinae</i> can be set up by editing user's crontab with <code> crontab -e </code> command.
+<pre> <code>@monthly /home/username/victreecron.sh </code> </pre>
+where victreecron.sh is a simple script that exists at the specified location and contains the actual ViCTree command required to run the analysis. </p>
+<p>For example, </p>
+<pre>
+<code>cd /path/to/victree/executables </code>
+<code>bash ViCTree.sh -t 40120 -s txid40120_seeds.fa -l 100 -c 50 -p 10 -i 1.0 -n Densovirinae </code>
+</pre>
+<p><b><i>Note:</i></b> Please ensure that all <code> .bashrc</code>, <code>.bash_profile </code>and <code> bash.bashrc</code> files are sourced in the crontab as the cron's PATH environment is different from regular bash terminal PATH.
+
+<h3>How can I visualise several versions of phylogeny in ViCTreeView?</h3>
+<p> It is possible to visualise different versions of a phylogeny in ViCTreeView to study incorporation of new sequences over time.  </p>
+<p> To achieve this, each version of the phylogeny should be tagged with a unique identifier by changing value of <code> $name</code> in following lines of code in the <a href="https://github.com/josephhughes/ViCTree/blob/master/ViCTree.sh"> ViCTree.sh. </a></p>
+<pre>
+<code>cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx </code>
+<code>cp ${tid}/${tid}_label.tsv ViCTreeView/data/${name}_label.tsv </code>
+<code>cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv </code>
+<code>git add data/${name}.nhx data/${name}.csv data/${name}_label.tsv </code>
+<code>git commit -m "Data files updated for $name" </code>
+</pre>
+<p>These changes would add a new version of the files with a unique identifier in the ViCTreeView's data folder. </p>
+<p>A ViCTreeView instance that demonstrates visualisation of multiple phylogenies of <i>Densovirinae</i> is set up on: <a href="http://bioinformatics.cvr.ac.uk/victree-densovirinae/#"> http://bioinformatics.cvr.ac.uk/victree-densovirinae </a> Three separate versions of <i>Densovirinae</i> phylogeny can be browsed using the pull down menu labelled Examples. </p>
+<p><ul>
+<li> Densovirinae042017 - April 2017 </li>
+<li> Densovirinae062017 - June 2017 </li>
+<li> Densovirinae122016 - December 2016 </li>
+</ul>
+</p>
+
+<h3>Is it possible to visualise a specific version of the phylogeny in ViCTreeView?</h3>
+
+<p> It is possible to visualise a specific version of the phylogeny in ViCTreeView. To achieve this update <code>branch </code> parameter to a specific branch version in your forked repository in the following lines in the file <a href="https://github.com/anilthanki/ViCTreeView/blob/master/index.html">index.html </a> in ViCTreeView sub-directory.</p>
+<pre><code>
+var user_id = "anilthanki"
+var repo_name = "ViCTreeView"
+var branch = "master" #change the branch name to specific version you would like to visualise
+var dir = "data"
+</code>
+</pre>
+
+<!-- <h3>How can I cite ViCTree?</h3>
+update this eventually -->
+<h3>How does zoom-in/out work in ViCTreeView? </h3>
+<p> We have implemented a <a href="https://www.google.co.uk/maps"> Google maps </a> like zoom-in and zoom-out approach. It is possible to zoom in/out using the mouse scroll button in ViCTreeView interface. It is also possible to zoom-in by clicking the left mouse button twice. It is fully tested and works best in Google chrome, Safari and Firefox web browsers. 
+
+<h3>Is it possible to reroot the tree in ViCTreeView? </h3>
+<p>The automated phylogeny generated within ViCTree is mid-point rooted. However, ViCTreeView provides an option to re-root the tree to any nodes.</p>
+<p>To reroot a tree, click on the white circle on the branch of interest and click on Re-root to change the root of the tree. </p>
+
+<h3>What do the different coloured clusters represent in ViCTreeView? </h3>
+<p> When a specific 'Pairwise Distance' value is selected in the ViCTreeView interface, any branches within specified distance criteria are highlighted in different coloured clusters. </p> 
+<a name="contact">
+<h3> <a href="#contact"> Contact </a> </h3>
+<p> The ViCTree framework is developed by : </p>
+<p>Sejal Modha (<a href="https://github.com/sejmodha" class="user-mention">@sejmodha</a>), Anil Thanki (<a href="https://github.com/anilthanki" class="user-mention">@anilthanki</a>) and Joseph Hughes (<a href="https://github.com/josephhughes" class="user-mention">@josephhughes</a>). </p>
+
+  </body>
+</html>
