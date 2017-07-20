@@ -31,8 +31,9 @@
     
 
 <p><a href="http://bioinformatics.cvr.ac.uk/victree_web/">ViCTree Home </a></p>
-<p><a href="http://bioinformatics.cvr.ac.uk/victree_web/tutorial.html">Tutorial </p>
-<p><a href="http://bioinformatics.cvr.ac.uk/victree_web/example.html">Case Study: <i>Densovirinae</i> Example </a></p>
+<p><a href="tutorial.html">Tutorial for command-line use</p>
+<p><a href="example.html">Case Study: <i>Densovirinae</i> Example </a></p>
+<p><a href="features.html"> Tree visualisation features in ViCTreeView </a></p>
 
 <h3>How can I set up ViCTree to update phylogenies automatically?</h3>
 <p> Once ViCTree framework is set up, it is easy to automatically update the phylogeny using scheduler utility such as <a href="https://en.wikipedia.org/wiki/Cron"> cron. </a> </p>
@@ -81,12 +82,28 @@ update this eventually -->
 <h3>How does zoom-in/out work in ViCTreeView? </h3>
 <p> We have implemented a <a href="https://www.google.co.uk/maps"> Google maps </a> like zoom-in and zoom-out approach. It is possible to zoom in/out using the mouse scroll button in ViCTreeView interface. It is also possible to zoom-in by clicking the left mouse button twice. It is fully tested and works best in Google chrome, Safari and Firefox web browsers. 
 
-<h3>Is it possible to reroot the tree in ViCTreeView? </h3>
+<h3>Is it possible to re-root the tree in ViCTreeView? </h3>
 <p>The automated phylogeny generated within ViCTree is mid-point rooted. However, ViCTreeView provides an option to re-root the tree to any nodes.</p>
 <p>To reroot a tree, click on the white circle on the branch of interest and click on Re-root to change the root of the tree. </p>
 
 <h3>What do the different coloured clusters represent in ViCTreeView? </h3>
 <p> When a specific 'Pairwise Distance' value is selected in the ViCTreeView interface, any branches within specified distance criteria are highlighted in different coloured clusters. </p> 
+
+<h3>How can I select correct number of seeds and BLAST coverage and/or length parameters for a new virus family/subfamily? </h3>
+<p> ViCTree github repository contains two scripts: <code> <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code> and <code> <a href= "https://github.com/josephhughes/ViCTree/blob/master/validate.sh"> validate.sh </a> </code> that can be used to select correct parameters for a new viral group of interest. </p>
+<p> <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code>  takes three input parameters: </p>
+<p><ul>
+<li> $1 = Seed sequences file in fasta format </li>
+<li> $2 = Number of seed sequences to select </li>
+<li> $3 = Output file name </li>
+</ul> </p>
+ and generates a hundred simulated subsets of the BLAST output with the number of seed provided as input from the specified seed set pool.
+ <p>
+<p><a href= "https://github.com/josephhughes/ViCTree/blob/master/validate.sh"> validate.sh </a> </code> uses output files generated from the <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code> and a file with the list of all currently classified sequence accession numbers. 
+It generates a tabular output file with following details.
+<p>
+<code>NumberOfSeeds RunNo Length Coverage SeqFound FalsePos FalseNeg </code> 
+</p> 
 <a name="contact">
 <h3> <a href="#contact"> Contact </a> </h3>
 <p> The ViCTree framework is developed by : </p>
