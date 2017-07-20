@@ -91,7 +91,7 @@ update this eventually -->
 
 <h3>How can I select correct number of seeds and BLAST coverage and/or length parameters for a new virus family/subfamily? </h3>
 <p> ViCTree github repository contains two scripts: <code> <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code> and <code> <a href= "https://github.com/josephhughes/ViCTree/blob/master/validate.sh"> validate.sh </a> </code> that can be used to select correct parameters for a new viral group of interest. </p>
-<p> <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code>  takes three input parameters: </p>
+<p> <code> <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code>  takes three input parameters: </p>
 <p><ul>
 <li> $1 = Seed sequences file in fasta format </li>
 <li> $2 = Number of seed sequences to select </li>
@@ -99,7 +99,7 @@ update this eventually -->
 </ul> </p>
  and generates a hundred simulated subsets of the BLAST output with the number of seed provided as input from the specified seed set pool.
  <p>
-<p><a href= "https://github.com/josephhughes/ViCTree/blob/master/validate.sh"> validate.sh </a> </code> uses output files generated from the <a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code> and a file with the list of all currently classified sequence accession numbers. 
+<p><code><a href= "https://github.com/josephhughes/ViCTree/blob/master/validate.sh"> validate.sh </a> </code> uses output files generated from the <code><a href= "https://github.com/josephhughes/ViCTree/blob/master/shuffle.sh"> shuffle.sh </a> </code> and a file with the list of all currently classified sequence accession numbers. 
 It generates a tabular output file with following details.
 <p>
 <code>NumberOfSeeds RunNo Length Coverage SeqFound FalsePos FalseNeg </code> 
