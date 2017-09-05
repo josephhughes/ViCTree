@@ -1,0 +1,14 @@
+If you use ViCTree please cite following tools.
+
+BLAST
+Altschul,S.F. et al. (1990) Basic local alignment search tool. J. Mol. Biol., 215, 403–10
+
+CD-HIT
+Fu,L. et al. (2012) CD-HIT: accelerated for clustering the next-generation sequencing data. Bioinformatics, 28, 3150–3152.
+
+Clustal Omega
+Sievers,F. et al. (2011) Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Mol. Syst. Biol., 7, 539.
+
+RAxML
+Stamatakis,A. (2014) RAxML version 8: a tool for phylogenetic analysis and post-analysis of large phylogenies. Bioinformatics, 30, 1312–1313.
+
