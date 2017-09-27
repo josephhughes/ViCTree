@@ -1,0 +1,362 @@
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <script src="jquery/js/jquery-1.11.2.min.js"></script>
+
+    <script src="scripts/github.js"></script>
+
+    <script src="scripts/github.bundle.min.js"></script>
+
+    <script src="jquery/js/jquery-ui-1.11.2.js"></script>
+
+    <script src="bootstrap/bootstrap.min.js"></script>
+
+    <script src="scripts/d3.v3.min.js"></script>
+
+    <script src="scripts/download.js"></script>
+
+    <script src="scripts/victreeview.js"></script>
+
+    <script src="scripts/newick-to-json.js"></script>
+
+    <script src="scripts/underscore-min.js"></script>
+
+    <link rel="stylesheet" href="jquery/css/smoothness/jquery-ui-1.11.2.css"/>
+
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+
+    <link href="font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+
+    <link href="css/phylotree.css" rel="stylesheet">
+
+    <script>
+
+        var mouseX, mouseY;
+        
+        $(document).mousemove(function (e) {
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+        });
+
+         var headerNames;
+
+        function changeGenome(file, matrix, label) {
+            $("#example .checked").each(function () {
+                var self = this
+                var select = $(self).parent().text().replace(/\s+/g, '')
+
+                if (file.indexOf(select) >= 0) {
+                    $(self).html(" <i class='fa fa-check'></i>")
+                } else {
+                    $(self).html("")
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: file,
+                dataType: "text",
+                success: function (treeString) {
+                    var res = d3_phylotree_newick_parser(treeString)
+                    var species;
+                    var labels = {}
+                    d3.csv(matrix)
+                            .get(function (error, rows) {
+                                species = rows;
+                                d3.tsv(label)
+                                        .get(function (error, rows) {
+                                            headerNames = d3.keys(rows[0]);
+
+                                            for (var i in rows) {
+                                                labels[rows[i][headerNames[0]]] = rows[i]
+                                            }
+
+                                            var tree1 = new Tree(species, headerNames, labels, res, "#tree_container");
+
+                                            tree1.drawTree()
+
+                                        });
+                            });
+                }
+            })
+        }
+
+        function removePopup() {
+            $("#popup").fadeOut()
+            $("#popup2").fadeOut()
+        }
+
+        $(document).ready(function () {
+            var github = new Github();
+
+            var user_id = "anilthanki"
+            var repo_name = "ViCTreeView"
+            var branch = "master"
+            var dir = "data"
+            var URL = "https://raw.githubusercontent.com/" + user_id + "/" + repo_name + "/" + branch + "/" + dir
+
+            var repo = github.getRepo(user_id, repo_name);
+
+            var file_list = [];
+
+            var files = repo.contents(branch, dir, function (err, contents) {
+                contents.forEach(function (file) {
+                    if (file.type == "file") {
+                        var name = file.name;
+
+                        var fileExtensionPatter = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/
+                        var extension = name.match(fileExtensionPatter)[0]
+
+                        var file_name = name.split(".")[0]
+
+                        if ("file_name".indexOf("_")) {
+                            file_name = file_name.split("_")[0]
+                        }
+
+                        if (jQuery.inArray(file_name, file_list) === -1) {
+                            file_list.push(file_name);
+                        }
+                    }
+                })
+
+                var ObjUl = $('<ul class="dropdown-menu"></ul>');
+
+                file_list.forEach(function (file) {
+                    var file_path = URL + "/" + file;
+                    $("<li id='example_" + file + "'' onclick=changeGenome('" + file_path + ".nhx','" + file_path + ".csv','" + file_path + "_label.tsv')><a href='#' class='ui-link'>" + file + "<span class='checked'></span> </a></li>").appendTo(ObjUl);
+
+                })
+
+                $('#example').append(ObjUl);
+
+                var file_path = URL + "/" + file_list[0];
+                changeGenome(file_path + ".nhx", file_path + ".csv", file_path + "_label.tsv")
+            });
+        });
+       
+    </script>
+</head>
+
+<body style='padding-top: 100px;'>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+            <div class="navbar-brand"> ViCTree   <a href="http://bioinformatics.cvr.ac.uk/victree_web/" target="_blank">
+                <i class="fa fa-external-link"></i>
+            </a>
+
+            </div>
+            <a class="hidden-phone" target="_new" href="https://github.com/josephhughes/ViCTree">
+                <img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
+                     style="position: fixed; top: 0; right: 0; border: 0; z-index: 2000">
+            </a>
+
+        </div>
+    </div>
+
+    <table width="100%" style="table-layout: auto;">
+        <tbody>
+
+        <tr>
+            <td width="25%"  valign="bottom">
+                <table>
+                    <tr>
+                        <td>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown" id="example">
+                                    <a data-toggle="dropdown" class="dropdown-toggle ui-link" href="#">Examples <b
+                                            class="caret"></b></a>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown" id="label_list">
+                                    <a data-toggle="dropdown" class="dropdown-toggle ui-link" href="#">Labels <b
+                                            class="caret"></b></a>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown" id="save">
+                                    <a data-toggle="dropdown" class="dropdown-toggle ui-link" href="#">Download <b
+                                            class="caret"></b></a>
+                                    <ul class="dropdown-menu" aria-labelledby="save">
+                                        <li><a id="save_svg" class="ui-link" href="#">SVG <span
+                                                class="checked"> </span></a></li>
+                                        <li><a id="save_image" class="ui-link" href="#">Image <span
+                                                class="checked"></span>
+                                        </a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm ui-btn ui-shadow ui-corner-all"
+                                    id="sort_ascending" title="Increase Tree Height">
+                                <i class="fa fa-expand"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm ui-btn ui-shadow ui-corner-all"
+                                    id="sort_descending" title="Reduces Tree Height">
+                                <i class="fa fa-compress"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm ui-btn ui-shadow ui-corner-all"
+                                    id="change_tree" title="Toggle between branch length">
+                                <i class="change_tree fa fa-align-justify"></i>
+                            </button>
+                        </td>
+                        </td>
+                    </tr>
+                </table>
+            <td width="75%">
+                <table width="100%" style="table-layout: auto;">
+                    <tr>
+                        <td idth="10%">
+                                    <span style="color: #777">
+                                         Pairwise distance
+                                    </span>
+                        </td>
+
+                        <td width="10%">
+                            <input type="number" name="percentage" id="percentage" min="0" max="100"
+                                   style="border: 1px solid lightgray; font-weight: bold; margin-left: 10px; padding: 2px; width: 50px;">
+                        </td>
+                        <td width="80%">
+                            <div class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                                 id="slider" style="width:80%;"><span style="left: 0%;"
+                                                                      class="ui-slider-handle ui-state-default ui-corner-all"
+                                                                      tabindex="0"></span></div>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</nav>
+
+
+<div class='container' id="main_display"  style="left: 0;  position: absolute;">
+    <div class='row'>
+        <div class='col-md-12'>
+            <div id='tree_container' class='tree-widget'>
+            </div>
+        </div>
+    </div>
+    <div id="popup" class="bubbleleft">
+        <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr bgcolor=darkcyan>
+                    <td bgcolor="darkcyan" width=180px>
+                        <div style="color: white; padding: 2px; width: 180px; text-overflow: ellipsis;overflow: hidden;" id="desc">
+                        </div>
+                    </td>
+                    <td width=20px>
+                        <div style="color: white; padding: 2px; width: 100%;" id="">
+                            <i onclick="removePopup();" class="fa fa-close "
+                               style="color: white; position: absolute; right: 5px; top:5px; cursor: pointer; "></i>
+                        </div>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+        <div style="position: relative; padding: 5px;">
+            <table width=100% cellspacing="0" border="0">
+                <tbody>
+               
+                <tr>
+                    <td align="">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div id="ncbiSeqLink"  title="NCBI"></div>
+                                    
+                                    <hr style="margin-bottom: 2px; margin-top: 2px;">                           
+                                    
+                                    <div id="ncbiClusterLink"  title="Cluster"></div>
+                                </td>
+                                
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="popup2" class="bubbleleft">
+        <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <td bgcolor="darkcyan">
+                        <div style="color: white; padding: 2px; width: 100%;" id="stable_id_header">&nbsp;<span
+                                id="stable_label"></span>
+                            <i onclick="removePopup();" class="fa fa-close "
+                               style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
+                        </div>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+        <div style="position: relative; padding: 5px;">
+            <table width=100% cellspacing="0" border="0">
+                <tbody>
+               
+                <tr>
+                    <td>
+                        <div id="desc"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div id="pathroparent"  title="Path to Parent" ></div>
+                                    
+                                    <hr style="margin-bottom: 2px; margin-top: 2px;">                           
+                                    
+                                    <div id="reroot"  title="Re-root" ></div>
+                                    
+                                    <hr style="margin-bottom: 2px; margin-top: 2px;">                           
+                                    
+                                    <div id="openclose"  title="collapse" ></div>
+                                </td>
+                                
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<canvas id="canvas" width="2000px" height="1600px" style="display: none;">
+</canvas>
+</body>
+</html>
