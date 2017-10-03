@@ -31,8 +31,8 @@ raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.txid40119 -m PROTGAMMAJ
 Your input tree contains branch labels, these will also be printed in the output tree ...
 
 RAxML-rooted tree using subtree length-balance printed to file:
-/home1/modh01s/Projects/ICTV-phylo-master/pipeline/ViCTree/txid40119/RAxML_rootedTree.txid40119_reroot
+/home1/hugh01j/ViCTree/txid40119/RAxML_rootedTree.txid40119_reroot
 
 
-Time for tree rooting: 0.002787
+Time for tree rooting: 0.002804
 
