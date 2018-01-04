@@ -37,7 +37,11 @@ Fu,L. et al. (2012) CD-HIT: accelerated for clustering the next-generation seque
 
 Sievers,F. et al. (2011) Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Mol. Syst. Biol., 7, 539.
 
-**4. RAxML**
+**4. mPTP**
+
+Kapli,P. et al. (2017) Multi-rate Poisson tree processes for single-locus species delimitation under maximum likelihood and Markov chain Monte Carlo. Bioinformatics, 33, 1630–1638.
+
+**5. RAxML**
 
 Stamatakis,A. (2014) RAxML version 8: a tool for phylogenetic analysis and post-analysis of large phylogenies. Bioinformatics, 30, 1312–1313.
 
