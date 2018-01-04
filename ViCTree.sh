@@ -505,6 +505,10 @@ raxmlHPC-PTHREADS -f a -m $raxml -p 12345 -x 12345 -# 100 -s ${tid}_final_set_cl
 #####################
 raxmlHPC-PTHREADS -f I -t RAxML_bipartitionsBranchLabels.$tid -m PROTGAMMAJTT -n ${tid}_reroot	
 mv RAxML_rootedTree.${tid}_reroot ${tid}.nhx
+mptp --ml --multi --tree_file RAxML_bipartitions.${tid} --output RAxML_bipartitions.${tid}_mptp
+awk '{if (NR>6) print}' RAxML_bipartitions.${tid}_mptp.txt |tr '\n' '\t'|sed 's/Sp/\nSp/g'|awk -F"\t" '{for (i=2;i<=NF;i++) print $i"\t"$1}'|sed '/^\t/ d;s/://g' >${tid}_mptp_tabular_output
+awk 'FNR==NR{a[$1]=$2 FS $3;next}{ print $0"\t"$1"_"a[$1]}' ${tid}_mptp_tabular_output  ${tid}_label.tsv|perl -pe 's/ClusterSequences\t.*/ClusterSequences\tmPTPClusterID/' > ${tid}_label_with_mptp.tsv
+mv ${tid}_label_with_mptp.tsv ${tid}_label.tsv
 cd ..
 
 cp ${tid}/${tid}.nhx ViCTreeView/data/${name}.nhx
