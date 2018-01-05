@@ -24,7 +24,7 @@
 #		-h Print usage help message (Optional)				#
 #		-m Specify model for RAxML (Default is PTRGAMMJTT)		#
 #		-i Identity for clustering sequences using cdhit 		#
-#		-n Output name of the virus family or sub-family 		#
+#		-n Output name of the virus family or sub-family (Required e.g. Densovirinae) 		#
 #		-p Number of threads"`;						#
 #		-u A file with user-defined list of accessions"`;	#
 #-------------------------------------------------------------------------------#
@@ -37,7 +37,7 @@ usage=`echo -e "\n Usage: ViCTree <OPTIONS> \n\n
 		-h This helpful message\n
 		-m Specify model for RAxML (Default is PTRGAMMJTT)\n
 		-i Identity for clustering sequences using cdhit \n
-		-n Output name of the virus family or sub-family \n
+		-n Output name of the virus family or sub-family (Required e.g. Densovirinae)\n
 		-p Number of threads \n
 		-u A file with user-defined list of accessions"`;
 
