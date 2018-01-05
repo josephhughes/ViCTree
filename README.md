@@ -14,7 +14,7 @@ For documentation please visit ViCTree website: <a href="http://bioinformatics.c
 
 An instance of the visualisation component of the framework called ViCTreeView is available at <a href="http://bioinformatics.cvr.ac.uk/victree/">http://www.bioinformatics.cvr.ac.uk/ViCTree </a>
 
-<a href="http://bioinformatics.cvr.ac.uk/victree/"> ViCTreeView </a> was developed by <a href="https://github.com/anilthanki">Anil Thanki</a>.
+<a href="http://bioinformatics.cvr.ac.uk/victree/"> ViCTreeView </a> is developed by <a href="https://github.com/anilthanki">Anil Thanki</a>.
 
 Support
 -------
