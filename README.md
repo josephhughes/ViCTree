@@ -12,7 +12,9 @@ Documentation
 For documentation please visit ViCTree website: <a href="http://bioinformatics.cvr.ac.uk/victree_web/"> http://bioinformatics.cvr.ac.uk/victree_web/</a>
 <p>You can also find the documentation <a href="http://josephhughes.github.io/ViCTree/">here</a>.</p>
 
-An instance of the visualisation component of the framework is available at <a href="http://www.bioinformatics.cvr.ac.uk/ViCTree">http://www.bioinformatics.cvr.ac.uk/ViCTree </a>
+An instance of the visualisation component of the framework called ViCTreeView is available at <a href="http://bioinformatics.cvr.ac.uk/victree/">http://www.bioinformatics.cvr.ac.uk/ViCTree </a>
+
+<a href="http://bioinformatics.cvr.ac.uk/victree/"> ViCTreeView </a> is developed by <a href="https://github.com/anilthanki">Anil Thanki</a>.
 
 Support
 -------
