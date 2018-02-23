@@ -20,7 +20,7 @@ An instance of the visualisation component of the framework called ViCTreeView i
 Citation
 -----------
 
-Sejal Modha, Anil Thanki, Susan F Cotmore, Andrew J Davison, Joseph Hughes; ViCTree: An automated framework for taxonomic classification from protein sequences,__Bioinformatics__, bty099,<a href= "https://doi.org/10.1093/bioinformatics/bty099"> https://doi.org/10.1093/bioinformatics/bty099 </a>
+Sejal Modha, Anil Thanki, Susan F Cotmore, Andrew J Davison, Joseph Hughes; ViCTree: An automated framework for taxonomic classification from protein sequences, _Bioinformatics_, bty099,<a href= "https://doi.org/10.1093/bioinformatics/bty099"> https://doi.org/10.1093/bioinformatics/bty099 </a>
 
 Support
 -------
