@@ -16,6 +16,12 @@ An instance of the visualisation component of the framework called ViCTreeView i
 
 <a href="http://bioinformatics.cvr.ac.uk/victree/"> ViCTreeView </a> is developed by <a href="https://github.com/anilthanki">Anil Thanki</a>.
 
+
+Citation
+-----------
+
+Sejal Modha, Anil Thanki, Susan F Cotmore, Andrew J Davison, Joseph Hughes; ViCTree: An automated framework for taxonomic classification from protein sequences,__Bioinformatics__, bty099,<a href= "https://doi.org/10.1093/bioinformatics/bty099"> https://doi.org/10.1093/bioinformatics/bty099 </a>
+
 Support
 -------
 
