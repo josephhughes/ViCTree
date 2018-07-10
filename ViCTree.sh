@@ -518,7 +518,16 @@ cp ${tid}/${tid}.csv ViCTreeView/data/${name}.csv
 ####################################
 #Upload the data to git repository
 ####################################
-git add $tid
+#git add $tid
+git add ${tid}/RAxML_bipartitions.${tid} ${tid}/RAxML_bipartitions.${tid}_mptp.svg ${tid}/RAxML_bipartitions.${tid}_mptp.txt ${tid}/${tid}_clustalo_dist_mat
+git add ${tid}/${tid}_cluster_reps ${tid}/${tid}_clusters_info.csv ${tid}/${tid}.csv ${tid}/${tid}_final_set_clustalo_aln.fa 
+git add ${tid}/${tid}_final_set.fa ${tid}/${tid}_label.csv ${tid}/${tid}_label.tsv ${tid}/${tid}_mptp_tabular_output ${tid}/${tid}.nhx
+#RAxML_bestTree.txid40120                  RAxML_bootstrap.txid40120    txid40120_clusters_info.csv          txid40120_final_set.fa
+#RAxML_bipartitionsBranchLabels.txid40120  RAxML_info.txid40120         txid40120.csv                        txid40120_label.csv
+#RAxML_bipartitions.txid40120              RAxML_info.txid40120_reroot  txid40120_filtered.txt               txid40120_label.tsv
+#RAxML_bipartitions.txid40120_mptp.svg     txid40120_clustalo_dist_mat  txid40120_final_set.clstr            txid40120_mptp_tabular_output
+#RAxML_bipartitions.txid40120_mptp.txt     txid40120_cluster_reps       txid40120_final_set_clustalo_aln.fa  txid40120.nhx
+#git rm ${tid}/${tid}.fa
 git commit -m "Pipeline updated for $tid"
 git push
 cd ViCTreeView
