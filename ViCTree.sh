@@ -271,7 +271,7 @@ printf "Compiling Sequences \n";
 
 awk -F"\t" -v len=$len -v cov=$cover '{if($4 >= len && $5 >= cov) print $2}' $tid/${tid}_blastp.txt|sort -u > $tid/${tid}_filtered.txt
 
-grep --no-group-separator -A 1 -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
+grep --no-group-separator -A 1 -w -f $tid/${tid}_filtered.txt <(awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $tid/${tid}_checked.fa) >$tid/${tid}_set.fa
 cat $tid/${tid}_set.fa $seeds > $tid/${tid}_set_seeds_combined.fa;
 
 echo "-----------------Running Step 6 of Pipeline --------------------";
@@ -319,7 +319,7 @@ then
 		#Collate all members of a cluster together to form a URL for NCBI
 		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
 
-		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		grep --no-group-separator -A1 -w -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
 		do
@@ -418,7 +418,7 @@ else
 		#Collate all members of a cluster together to form a URL for NCBI
 		awk -F"," '{print $4","$1}' $tid/${tid}_clusters_info.csv| awk -F"," '{x=$1;$1="";a[x]=a[x]$0}END{for(x in a)print x,a[x]}' |sed -e 's/  /,/g;s/ /,/g;s/,$//g'|sed '/AccessionNumber/d' > $tid/${tid}_clusters_members_temp
 
-		grep --no-group-separator -A1 -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
+		grep --no-group-separator -A1 -w -f $tid/${tid}_cluster_rep_accession <(awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' $tid/${tid}_set_seeds_combined.fa)|awk '/^>/{f=!d[$1];d[$1]=1}f' > $tid/${tid}_final_set.fa
 		temp=`awk 'BEGIN{RS=">"}{gsub("\n","\t",$0); print ">"$0}' $tid/${tid}_final_set.fa |cut -f1|sed 's/>//g'`
 		for x in $(echo $temp)
 		do
