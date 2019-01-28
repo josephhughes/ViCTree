@@ -532,7 +532,7 @@ git commit -m "Pipeline updated for $tid"
 git push
 cd ViCTreeView
 #git pull
-git add data/${name}.nhx data/${name}.csv data/${name}_label.tsv
+git add ViCTreeView/data/${name}.nhx ViCTreeView/data/${name}.csv ViCTreeView/data/${name}_label.tsv
 git commit -m "Data files updated for $name"
 git push
 
