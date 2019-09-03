@@ -91,10 +91,10 @@
         $(document).ready(function () {
             var github = new Github();
 
-            var user_id = "josephhughes"
-            var repo_name = "ViCTree"
+            var user_id = "anilthanki"
+            var repo_name = "ViCTreeView"
             var branch = "master"
-            var dir = "ViCTreeView/data"
+            var dir = "data"
             var URL = "https://raw.githubusercontent.com/" + user_id + "/" + repo_name + "/" + branch + "/" + dir
 
             var repo = github.getRepo(user_id, repo_name);
@@ -247,7 +247,7 @@
 </nav>
 
 
-<div class='container' id="main_display"  style="left: 0;  position: absolute;">
+<div class='container' id="main_display"  style="left: 0;  position: absolute; top:0;">
     <div class='row'>
         <div class='col-md-12'>
             <div id='tree_container' class='tree-widget'>

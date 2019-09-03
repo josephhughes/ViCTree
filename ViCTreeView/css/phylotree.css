@@ -144,12 +144,15 @@ svg:not(:root) {
     display: none;
     height: auto;
     width: 200px;
+    position:absolute;
 }
 
 #popup2 {
     display: none;
     height: auto;
     width: auto;
+    position:absolute;
+
 }
 
 #popup_header {
